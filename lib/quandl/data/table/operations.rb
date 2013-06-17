@@ -34,7 +34,7 @@ module Operations
   end
   
   def to_jd
-    DataTable.new( Parse.date_to_julian( data_array ), frequency: frequency )
+    Table.new( Parse.date_to_julian( data_array ), frequency: frequency )
   end
   def to_jd!
     @data_array = Parse.date_to_julian( data_array )
@@ -54,7 +54,7 @@ module Operations
   end
   
   def sort_ascending
-    DataTable.new( Parse.sort( data_array, :asc ), frequency: frequency )
+    Table.new( Parse.sort( data_array, :asc ), frequency: frequency )
   end
   def sort_ascending!
     @data_array = Parse.sort( data_array, :asc )
@@ -62,7 +62,7 @@ module Operations
   end
   
   def sort_descending
-    DataTable.new( Parse.sort( data_array, :desc ), frequency: frequency )
+    Table.new( Parse.sort( data_array, :desc ), frequency: frequency )
   end
   def sort_descending!
     @data_array = Parse.sort( data_array, :desc )
