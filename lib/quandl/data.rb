@@ -8,6 +8,7 @@ require "active_support/core_ext/object"
 require "quandl/operation"
 
 require 'quandl/data/table'
+require 'quandl/data/random'
 
 module Quandl
   module Data 
