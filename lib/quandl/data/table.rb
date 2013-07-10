@@ -6,6 +6,7 @@ module Data
 class Table
 
   include Operations
+  include Loggable
   
   delegate *Array.forwardable_methods, to: :data_array
 
