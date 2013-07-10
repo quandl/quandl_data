@@ -1,3 +1,4 @@
+require 'quandl/data/table/loggable'
 require 'quandl/data/table/operations'
 
 module Quandl
@@ -11,9 +12,8 @@ class Table
   delegate *Array.forwardable_methods, to: :data_array
 
   def initialize(*args)
-    data = args.first
+    self.data_array = args.first
     self.attributes = args.extract_options!
-    self.data_array = data
   end
 
   def data_array

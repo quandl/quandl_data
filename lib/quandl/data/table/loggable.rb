@@ -7,11 +7,11 @@ module Loggable
   extend ActiveSupport::Concern
 
   def to_h
-    Time.log_elapsed("Quandl::Data::Table.to_h"){ super }
+    Quandl::Logger.info_with_elapsed("Quandl::Data::Table.to_h"){ super }
   end
   
   def to_csv
-    Time.log_elapsed("Quandl::Data::Table.to_csv"){ super }
+    Quandl::Logger.info_with_elapsed("Quandl::Data::Table.to_csv"){ super }
   end
   
 end
