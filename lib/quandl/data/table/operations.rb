@@ -30,10 +30,10 @@ module Operations
   end
   
   def to_csv
-    t1 = Time.now
-    r = data_array.collect(&:to_csv).join
-    Quandl::Logger.debug("Quandl::Data::Table::Operations.to_csv (#{t1.elapsed_ms})")
-    r
+    return data_array.collect(&:to_csv).join if data_array?
+    return pristine_data.collect(&:to_csv).join if pristine_data.kind_of?(Array)
+    return pristine_data if pristine_data.kind_of?(String)
+    return ''
   end
   
   def to_jd
