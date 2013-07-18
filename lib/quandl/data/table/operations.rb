@@ -52,6 +52,11 @@ module Operations
     self
   end
   
+  def limit(amount)
+    @data_array = data_array[0..( amount.to_i - 1 )] if amount.present?
+    self
+  end
+  
   def sort_order(dir)
     dir == :asc ? sort_ascending! : sort_descending!
   end

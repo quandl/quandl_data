@@ -25,4 +25,8 @@ describe Quandl::Data::Table do
     subject.to_date.first.first.should be_a Date
   end
   
+  it "should limit the data" do
+    subject.limit(2).count.should eq 2
+  end
+  
 end
