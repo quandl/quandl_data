@@ -53,17 +53,27 @@ module Operations
   end
   
   def trim_start(date)
+    # date format
     date = Date.parse(date) if date.is_a?(String)
     date = date.jd if date.respond_to?(:jd)
+    # find index
     index = data_array.rindex{|r| r[0] == date }
-    @data_array = @data_array[index..-1]
+    # trim if index is valid
+    @data_array = @data_array[index..-1] if @data_array[index]
+    # chainable
+    self
   end
 
   def trim_end(date)
+    # date format
     date = Date.parse(date) if date.is_a?(String)
     date = date.jd if date.respond_to?(:jd)
+    # find index
     index = data_array.rindex{|r| r[0] == date }
-    @data_array = @data_array[0..index]
+    # trim if index is valid
+    @data_array = @data_array[0..index] if @data_array[index]
+    # chainable
+    self
   end
   
   def limit(amount)
