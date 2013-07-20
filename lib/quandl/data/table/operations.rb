@@ -52,6 +52,20 @@ module Operations
     self
   end
   
+  def trim_start(date)
+    date = Date.parse(date) if date.is_a?(String)
+    date = date.jd if date.respond_to?(:jd)
+    index = data_array.rindex{|r| r[0] == date }
+    @data_array = @data_array[index..-1]
+  end
+
+  def trim_end(date)
+    date = Date.parse(date) if date.is_a?(String)
+    date = date.jd if date.respond_to?(:jd)
+    index = data_array.rindex{|r| r[0] == date }
+    @data_array = @data_array[0..index]
+  end
+  
   def limit(amount)
     @data_array = data_array[0..( amount.to_i - 1 )] if amount.present?
     self
