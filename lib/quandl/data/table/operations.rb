@@ -59,7 +59,7 @@ module Operations
     # find index
     index = data_array.rindex{|r| r[0] == date }
     # trim if index is valid
-    @data_array = @data_array[index..-1] if @data_array[index]
+    @data_array = @data_array[index..-1] if index && @data_array[index]
     # chainable
     self
   end
@@ -71,7 +71,7 @@ module Operations
     # find index
     index = data_array.rindex{|r| r[0] == date }
     # trim if index is valid
-    @data_array = @data_array[0..index] if @data_array[index]
+    @data_array = @data_array[0..index] if index && @data_array[index]
     # chainable
     self
   end
