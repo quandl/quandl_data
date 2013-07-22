@@ -55,6 +55,12 @@ describe Quandl::Data::Table do
     
   end
   
+  describe "to_json" do
+    it "should convert the data_array to json and back" do
+      JSON.parse(subject.to_json).should eq JSON.parse(subject.data_array.to_json)
+    end
+  end
+  
   describe "trim_end" do
   
     it "should delete everything after trim_end" do
