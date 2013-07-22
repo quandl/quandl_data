@@ -43,37 +43,47 @@ module Operations
     @data_array = Parse.date_to_julian( data_array )
     self
   end
-  
+
+  def to_date!
+    @data_array = to_date.to_a
+    self
+  end
   def to_date
     Parse.julian_to_date data_array
   end
-  def to_date!
-    @data_array = Parse.julian_to_date data_array
+  
+  def trim_start!(trim_date)
+    @data_array = trim_start(trim_date).to_a
     self
+  end
+  def trim_start(trim_date)
+    # date format
+    trim_date = Date.parse(trim_date) if trim_date.is_a?(String)
+    trim_date = trim_date.jd if trim_date.respond_to?(:jd)
+    # find index
+    return self unless trim_date.is_a?(Integer)
+    # reject rows with dates less than
+    sort_descending.delete_if do |row|
+      row_date = row[0]
+      row_date < trim_date
+    end
   end
   
-  def trim_start(date)
-    # date format
-    date = Date.parse(date) if date.is_a?(String)
-    date = date.jd if date.respond_to?(:jd)
-    # find index
-    index = data_array.rindex{|r| r[0] == date }
-    # trim if index is valid
-    @data_array = @data_array[index..-1] if index && @data_array[index]
-    # chainable
+  def trim_end!(trim_date)
+    @data_array = trim_end(trim_date).to_a
     self
   end
-
-  def trim_end(date)
+  def trim_end(trim_date)
     # date format
-    date = Date.parse(date) if date.is_a?(String)
-    date = date.jd if date.respond_to?(:jd)
+    trim_date = Date.parse(trim_date) if trim_date.is_a?(String)
+    trim_date = trim_date.jd if trim_date.respond_to?(:jd)
     # find index
-    index = data_array.rindex{|r| r[0] == date }
-    # trim if index is valid
-    @data_array = @data_array[0..index] if index && @data_array[index]
-    # chainable
-    self
+    return self unless trim_date.is_a?(Integer)
+    # reject rows with dates less than
+    sort_descending.delete_if do |row|
+      row_date = row[0]
+      row_date > trim_date
+    end
   end
   
   def limit(amount)
@@ -85,20 +95,20 @@ module Operations
     dir == :asc ? sort_ascending! : sort_descending!
   end
   
+  def sort_ascending!
+    @data_array = sort_ascending.to_a
+    self
+  end
   def sort_ascending
     Table.new( Parse.sort( data_array, :asc ), frequency: frequency )
   end
-  def sort_ascending!
-    @data_array = Parse.sort( data_array, :asc )
+
+  def sort_descending!
+    @data_array = sort_descending.to_a
     self
   end
-  
   def sort_descending
     Table.new( Parse.sort( data_array, :desc ), frequency: frequency )
-  end
-  def sort_descending!
-    @data_array = Parse.sort( data_array, :desc )
-    self
   end
   
   def transform(*args)

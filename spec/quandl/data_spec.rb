@@ -51,4 +51,18 @@ describe Quandl::Data::Table do
     subject.to_date.first.first.should be_a Date
   end
   
+  it "should delete everything before trim_start" do
+    data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
+    date = data[-2][0]
+    data.trim_start(date).count.should eq 9
+  end
+  
+  it "should delete everything after trim_end" do
+    data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
+    date = data[1][0]
+    data.trim_end!(date)
+    data.data_array.should be_a Array
+    data.count.should eq 9
+  end
+  
 end
