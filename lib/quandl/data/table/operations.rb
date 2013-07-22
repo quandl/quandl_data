@@ -45,15 +45,15 @@ module Operations
   end
 
   def to_date!
-    @data_array = to_date.to_a
+    @data_array = to_date.data_array
     self
   end
   def to_date
-    Parse.julian_to_date data_array
+    Table.new( Parse.julian_to_date( data_array ) )
   end
   
   def trim_start!(trim_date)
-    @data_array = trim_start(trim_date).to_a
+    @data_array = trim_start(trim_date).data_array
     self
   end
   def trim_start(trim_date)
@@ -63,14 +63,15 @@ module Operations
     # find index
     return self unless trim_date.is_a?(Integer)
     # reject rows with dates less than
-    sort_descending.delete_if do |row|
+    data = sort_descending.delete_if do |row|
       row_date = row[0]
       row_date < trim_date
     end
+    Table.new(data)
   end
   
   def trim_end!(trim_date)
-    @data_array = trim_end(trim_date).to_a
+    @data_array = trim_end(trim_date).data_array
     self
   end
   def trim_end(trim_date)
@@ -80,15 +81,19 @@ module Operations
     # find index
     return self unless trim_date.is_a?(Integer)
     # reject rows with dates less than
-    sort_descending.delete_if do |row|
+    data = sort_descending.delete_if do |row|
       row_date = row[0]
       row_date > trim_date
     end
+    Table.new(data)
   end
   
-  def limit(amount)
-    @data_array = data_array[0..( amount.to_i - 1 )] if amount.present?
+  def limit!(amount)
+    @data_array = limit(amount).data_array
     self
+  end
+  def limit(amount)
+    Table.new( data_array[0..( amount.to_i - 1 )] )
   end
   
   def sort_order(dir)
@@ -96,19 +101,19 @@ module Operations
   end
   
   def sort_ascending!
-    @data_array = sort_ascending.to_a
+    @data_array = sort_ascending.data_array
     self
   end
   def sort_ascending
-    Table.new( Parse.sort( data_array, :asc ), frequency: frequency )
+    Table.new( Parse.sort( data_array.dup, :asc ), frequency: frequency )
   end
 
   def sort_descending!
-    @data_array = sort_descending.to_a
+    @data_array = sort_descending.data_array
     self
   end
   def sort_descending
-    Table.new( Parse.sort( data_array, :desc ), frequency: frequency )
+    Table.new( Parse.sort( data_array.dup, :desc ), frequency: frequency )
   end
   
   def transform(*args)

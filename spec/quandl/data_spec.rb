@@ -47,22 +47,62 @@ describe Quandl::Data::Table do
     subject.limit(2).count.should eq 2
   end
   
-  it "should convert julian dates to dates" do
-    subject.to_date.first.first.should be_a Date
+  describe "to_date" do
+
+    it "should convert julian dates to dates" do
+      subject.to_date.first.first.should be_a Date
+    end
+    
   end
   
-  it "should delete everything before trim_start" do
-    data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
-    date = data[-2][0]
-    data.trim_start(date).count.should eq 9
+  describe "trim_end" do
+  
+    it "should delete everything after trim_end" do
+      data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
+      date = data[1][0]
+      data.trim_end!(date)
+      data.data_array.should be_a Array
+      data.count.should eq 9
+    end
+  
+    it "should be chainable" do
+      subject.trim_end(subject.first.first).trim_end(subject.last.first)
+    end
+    
+    it "should not alter the original object" do
+      data = subject.trim_end(subject[2][0])
+      subject.count.should eq 4
+    end
+    
+    it "should alter the original object" do
+      subject.trim_end!(subject[2][0])
+      subject.count.should eq 2
+    end
+  
   end
   
-  it "should delete everything after trim_end" do
-    data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
-    date = data[1][0]
-    data.trim_end!(date)
-    data.data_array.should be_a Array
-    data.count.should eq 9
+  describe "trim_start" do
+  
+    it "should delete everything before trim_start" do
+      data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
+      date = data[-2][0]
+      data.trim_start(date).count.should eq 9
+    end
+  
+    it "should be chainable" do
+      subject.trim_start(subject.first.first).trim_end(subject.last.first)
+    end
+    
+    it "should not alter the original object" do
+      data = subject.trim_start(subject[2][0])
+      subject.count.should eq 4
+    end
+    
+    it "should alter the original object" do
+      subject.trim_start!(subject[-3][0])
+      subject.count.should eq 2
+    end
+  
   end
   
 end
