@@ -11,7 +11,7 @@ class Table
   
   delegate *Array.forwardable_methods, to: :data_array
   
-  delegate :to_json, to: :data_array
+  delegate :to_json, :as_json, to: :data_array
   
   attr_accessor :pristine_data
 

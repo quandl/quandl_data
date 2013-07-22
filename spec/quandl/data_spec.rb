@@ -61,6 +61,12 @@ describe Quandl::Data::Table do
     end
   end
   
+  describe "as_json" do
+    it "should be a representation of data_array" do
+      subject.as_json.should eq subject.data_array
+    end
+  end
+  
   describe "trim_end" do
   
     it "should delete everything after trim_end" do
