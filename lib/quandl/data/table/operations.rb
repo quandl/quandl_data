@@ -31,7 +31,7 @@ module Operations
   
   def to_csv
     return data_array.collect(&:to_csv).join if data_array?
-    return pristine_data.collect(&:to_csv).join if pristine_data.kind_of?(Array)
+    return pristine_data.collect(&:to_csv).join if pristine_data.respond_to?(:collect)
     return pristine_data if pristine_data.kind_of?(String)
     return ''
   end
