@@ -11,6 +11,6 @@ require 'quandl/data/table'
 require 'quandl/data/random'
 
 module Quandl
-  module Data 
+  module Data
   end
 end
