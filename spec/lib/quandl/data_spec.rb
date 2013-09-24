@@ -33,8 +33,8 @@ describe Quandl::Data::Table do
       data.transform(:rdiff_from).should eq [[1,4,3],[4,2,4],[5,0,0]]
     end
     it "should cumul" do
-      data = Quandl::Data::Table.new([ [1000, 10], [1001, 20], [1002, 30] ])
-      data.transform(:cumul).should eq [[ [1000, 10], [1001, 30], [1002, 60] ]]
+      data = Quandl::Data::Table.new( [[1000, 10], [1001, 20], [1002, 30]] )
+      data.transform(:cumul).should eq [[1000, 10], [1001, 30], [1002, 60]]
     end
   end
 
