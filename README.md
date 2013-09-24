@@ -6,7 +6,7 @@
 
 require 'quandl/data'
 
-decade_of_daily_data_as_csv = Quandl::Data::Random.table( rows: 3650, columns: 4, nils: false ).to_csv
+decade_of_daily_data_as_csv = Quandl::Fabricate::Data::Table.rand( rows: 3650, columns: 4, nils: false ).to_csv
 
 table = Quandl::Data::Table.new( decade_of_daily_data_as_csv )
 table.collapse(:monthly).transform(:rdiff).to_date

@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe Quandl::Data::Table do
-  subject { Quandl::Data::Random.table( nils: false, rows: 4, columns: 4 ) }
+  subject { Quandl::Fabricate::Data::Table.rand( nils: false, rows: 4, columns: 4 ) }
 
   its(:to_h){ should be_a Hash }
   its(:count){ should eq 4 }
@@ -23,14 +23,19 @@ describe Quandl::Data::Table do
     date_data.first.first.should be_a Date
   end
 
-  it "should transform the data" do
-    value = subject.first[1]
-    subject.transform(:rdiff).first[1].should_not eq value
-  end
-
-  it "should transform the data to rdiff from" do
-    data = Quandl::Data::Table.new([[1,3,5],[4,5,4],[5,15,20]])
-    data.transform(:rdiff_from).should eq [[1,4,3],[4,2,4],[5,0,0]]
+  describe "#transform" do
+    it "should rdiff" do
+      value = subject.first[1]
+      subject.transform(:rdiff).first[1].should_not eq value
+    end
+    it "should rdiff_from" do
+      data = Quandl::Data::Table.new([[1,3,5],[4,5,4],[5,15,20]])
+      data.transform(:rdiff_from).should eq [[1,4,3],[4,2,4],[5,0,0]]
+    end
+    it "should cumul" do
+      data = Quandl::Data::Table.new([ [1000, 10], [1001, 20], [1002, 30] ])
+      data.transform(:cumul).should eq [[ [1000, 10], [1001, 30], [1002, 60] ]]
+    end
   end
 
   it "should collapse the data" do
@@ -79,7 +84,7 @@ describe Quandl::Data::Table do
   describe "trim_end" do
   
     it "should delete everything after trim_end" do
-      data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
+      data = Quandl::Fabricate::Data::Table.rand( nils: false, rows: 10, columns: 1 ).sort_descending
       date = data[1][0]
       data.trim_end!(date)
       data.data_array.should be_a Array
@@ -105,7 +110,7 @@ describe Quandl::Data::Table do
   describe "trim_start" do
   
     it "should delete everything before trim_start" do
-      data = Quandl::Data::Random.table( nils: false, rows: 10, columns: 1 ).sort_descending
+      data = Quandl::Fabricate::Data::Table.rand( nils: false, rows: 10, columns: 1 ).sort_descending
       date = data[-2][0]
       data.trim_start(date).count.should eq 9
     end
