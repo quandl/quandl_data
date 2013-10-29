@@ -1,12 +1,21 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe Quandl::Data do
+describe Quandl::Data::Operations do
+
   let(:data){ Quandl::Fabricate::Data.rand( nils: false, rows: 4, columns: 4 ) }
   subject { data }
 
   its(:to_h){ should be_a Hash }
   its(:count){ should eq 4 }
+  
+  it "should parse csv" do
+    Quandl::Data.new(subject.to_csv).count.should eq 4
+  end
+  
+  it "should limit the data" do
+    subject.limit(2).count.should eq 2
+  end
   
   describe "#collapse=" do
 
@@ -19,10 +28,6 @@ describe Quandl::Data do
       subject.collapse.should_not eq :invalid
     end
     
-  end
-  
-  it "should parse csv" do
-    Quandl::Data.new(subject.to_csv).count.should eq 4
   end
   
   it "should convert to julian dates" do
@@ -57,27 +62,8 @@ describe Quandl::Data do
       data.transform(:cumul).should eq [[1000, 10], [1001, 30], [1002, 60]]
     end
   end
-
-  it "should limit the data" do
-    subject.limit(2).count.should eq 2
-  end
   
-  describe "to_csv" do
-    
-    its(:to_csv){ should be_a String }
-    
-    it "should output csv that is consistent with subject" do
-      data = CSV.parse( subject.to_csv ).collect{|r| r.collect{|v| v.to_f } }
-      data.should eq subject
-    end
-  
-    it "should output csv when initialized with a Quandl::Data" do
-      Quandl::Data.new( subject ).to_csv.should eq subject.to_csv
-    end
-    
-  end
-  
-  describe "to_date" do
+  describe "#to_date" do
 
     it "should convert julian dates to dates" do
       subject.to_date.first.first.should be_a Date
@@ -85,19 +71,19 @@ describe Quandl::Data do
     
   end
   
-  describe "to_json" do
+  describe "#to_json" do
     it "should convert the data_array to json and back" do
       JSON.parse(subject.to_json).should eq JSON.parse(subject.data_array.to_json)
     end
   end
   
-  describe "as_json" do
+  describe "#as_json" do
     it "should be a representation of data_array" do
       subject.as_json.should eq subject.data_array
     end
   end
   
-  describe "trim_end" do
+  describe "#trim_end" do
   
     it "should delete everything after trim_end" do
       data = Quandl::Fabricate::Data.rand( nils: false, rows: 10, columns: 1 ).sort_descending
@@ -123,7 +109,7 @@ describe Quandl::Data do
   
   end
   
-  describe "trim_start" do
+  describe "#trim_start" do
   
     it "should delete everything before trim_start" do
       data = Quandl::Fabricate::Data.rand( nils: false, rows: 10, columns: 1 ).sort_descending
@@ -145,6 +131,21 @@ describe Quandl::Data do
       subject.count.should eq 2
     end
   
+  end
+  
+  describe "#to_csv" do
+    
+    its(:to_csv){ should be_a String }
+    
+    it "should output csv that is consistent with subject" do
+      data = CSV.parse( subject.to_csv ).collect{|r| r.collect{|v| v.to_f } }
+      data.should eq subject
+    end
+  
+    it "should output csv when initialized with a Quandl::Data" do
+      Quandl::Data.new( subject ).to_csv.should eq subject.to_csv
+    end
+    
   end
   
 end
