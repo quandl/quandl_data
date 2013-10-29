@@ -21,8 +21,6 @@ describe Quandl::Data do
     
   end
   
-  
-
   it "should parse csv" do
     Quandl::Data.new(subject.to_csv).count.should eq 4
   end
@@ -40,6 +38,12 @@ describe Quandl::Data do
   end
 
   describe "#transform" do
+
+    it "should reject invalid transform" do
+      subject.transform(:invalid)
+      subject.transform.should_not eq :invalid
+    end
+    
     it "should rdiff" do
       value = subject.first[1]
       subject.transform(:rdiff).first[1].should_not eq value

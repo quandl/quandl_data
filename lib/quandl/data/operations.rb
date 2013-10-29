@@ -118,6 +118,7 @@ module Quandl::Data::Operations
     self
   end
   def transform=(value)
+    return false unless Transform.valid?(value)
     @transform = value
     @data_array = Transform.perform( data_array, value )
   end
