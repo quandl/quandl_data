@@ -128,6 +128,7 @@ module Quandl::Data::Operations
     self
   end
   def collapse=(collapse)
+    return false unless Collapse.valid?(collapse)
     @collapse = collapse
     @frequency = collapse
     @data_array = Collapse.perform( data_array, collapse )

@@ -2,10 +2,26 @@
 require 'spec_helper'
 
 describe Quandl::Data do
-  subject { Quandl::Fabricate::Data.rand( nils: false, rows: 4, columns: 4 ) }
+  let(:data){ Quandl::Fabricate::Data.rand( nils: false, rows: 4, columns: 4 ) }
+  subject { data }
 
   its(:to_h){ should be_a Hash }
   its(:count){ should eq 4 }
+  
+  describe "#collapse=" do
+
+    it "should collapse to monthly" do
+      subject.collapse(:monthly).count.should eq 1
+    end
+    
+    it "should reject invalid collapse" do
+      subject.collapse(:invalid)
+      subject.collapse.should_not eq :invalid
+    end
+    
+  end
+  
+  
 
   it "should parse csv" do
     Quandl::Data.new(subject.to_csv).count.should eq 4
@@ -36,10 +52,6 @@ describe Quandl::Data do
       data = Quandl::Data.new( [[1000, 10], [1001, 20], [1002, 30]] )
       data.transform(:cumul).should eq [[1000, 10], [1001, 30], [1002, 60]]
     end
-  end
-
-  it "should collapse the data" do
-    subject.collapse(:monthly).count.should eq 1
   end
 
   it "should limit the data" do
