@@ -1,3 +1,8 @@
+## 1.1.0
+
+* it rejects invalid transforms
+* it rejects invalid collapse
+
 ## 1.0.0
 
 * Quandl::Data::Table is removed. Replaced by: Quandl::Data
