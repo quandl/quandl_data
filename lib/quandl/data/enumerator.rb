@@ -1,20 +1,15 @@
-require 'quandl/data/table/loggable'
-require 'quandl/data/table/operations'
-
-module Quandl
-module Data
+module Quandl::Data::Enumerator
+  extend ActiveSupport::Concern
   
-class Table
-
-  include Operations
-  include Loggable
+  included do
+    
+    delegate *Array.forwardable_methods, to: :data_array
   
-  delegate *Array.forwardable_methods, to: :data_array
+    delegate :to_json, :as_json, to: :data_array
   
-  delegate :to_json, :as_json, to: :data_array
+    attr_accessor :pristine_data
+  end
   
-  attr_accessor :pristine_data
-
   def initialize(*args)
     self.pristine_data = args.first
     self.attributes = args.extract_options!
@@ -48,6 +43,4 @@ class Table
     end
   end
   
-end  
-end
 end

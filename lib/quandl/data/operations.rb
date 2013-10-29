@@ -1,8 +1,4 @@
-module Quandl
-module Data
-class Table
-  
-module Operations
+module Quandl::Data::Operations
   
   extend ActiveSupport::Concern
   include Quandl::Operation
@@ -37,7 +33,7 @@ module Operations
   end
   
   def to_jd
-    Table.new( Parse.date_to_julian( data_array ), frequency: frequency )
+    Quandl::Data.new( Parse.date_to_julian( data_array ), frequency: frequency )
   end
   def to_jd!
     @data_array = Parse.date_to_julian( data_array )
@@ -49,7 +45,7 @@ module Operations
     self
   end
   def to_date
-    Table.new( Parse.julian_to_date( data_array ) )
+    Quandl::Data.new( Parse.julian_to_date( data_array ) )
   end
   
   def trim_start!(trim_date)
@@ -67,7 +63,7 @@ module Operations
       row_date = row[0]
       row_date < trim_date
     end
-    Table.new(data)
+    Quandl::Data.new(data)
   end
   
   def trim_end!(trim_date)
@@ -85,7 +81,7 @@ module Operations
       row_date = row[0]
       row_date > trim_date
     end
-    Table.new(data)
+    Quandl::Data.new(data)
   end
   
   def limit!(amount)
@@ -93,7 +89,7 @@ module Operations
     self
   end
   def limit(amount)
-    Table.new( data_array[0..( amount.to_i - 1 )] )
+    Quandl::Data.new( data_array[0..( amount.to_i - 1 )] )
   end
   
   def sort_order(dir)
@@ -105,7 +101,7 @@ module Operations
     self
   end
   def sort_ascending
-    Table.new( Parse.sort( data_array.dup, :asc ), frequency: frequency )
+    Quandl::Data.new( Parse.sort( data_array.dup, :asc ), frequency: frequency )
   end
 
   def sort_descending!
@@ -113,7 +109,7 @@ module Operations
     self
   end
   def sort_descending
-    Table.new( Parse.sort( data_array.dup, :desc ), frequency: frequency )
+    Quandl::Data.new( Parse.sort( data_array.dup, :desc ), frequency: frequency )
   end
   
   def transform(*args)
@@ -149,8 +145,4 @@ module Operations
     data
   end
   
-end
-
-end
-end
 end

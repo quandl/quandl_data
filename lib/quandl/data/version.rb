@@ -1,5 +1,5 @@
 module Quandl
-module Data
-  VERSION = "0.1.11"
+class Data
+  VERSION = "0.2.0"
 end
 end

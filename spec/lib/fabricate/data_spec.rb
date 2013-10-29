@@ -1,12 +1,12 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe Quandl::Fabricate::Data::Table do
+describe Quandl::Fabricate::Data do
   
-  let(:data){ Quandl::Fabricate::Data::Table.rand( rows: 4, columns: 5, nils: false ) }
+  let(:data){ Quandl::Fabricate::Data.rand( rows: 4, columns: 5, nils: false ) }
   subject{ data }
   
-  it{ should be_a Quandl::Data::Table }
+  it{ should be_a Quandl::Data }
   its(:count){ should eq 4 }
   
   describe "#first" do

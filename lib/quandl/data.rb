@@ -7,10 +7,12 @@ require "active_support/core_ext/object"
 
 require "quandl/operation"
 
-require 'quandl/data/table'
-require 'quandl/data/random'
+require 'quandl/data/enumerator'
+require 'quandl/data/operations'
+require 'quandl/data/logging'
 
-module Quandl
-  module Data
-  end
+class Quandl::Data
+  include Enumerator
+  include Operations
+  include Logging if defined?(QUANDL_LOGGER) && QUANDL_LOGGER == true
 end

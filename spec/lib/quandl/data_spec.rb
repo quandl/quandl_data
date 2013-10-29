@@ -1,14 +1,14 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe Quandl::Data::Table do
-  subject { Quandl::Fabricate::Data::Table.rand( nils: false, rows: 4, columns: 4 ) }
+describe Quandl::Data do
+  subject { Quandl::Fabricate::Data.rand( nils: false, rows: 4, columns: 4 ) }
 
   its(:to_h){ should be_a Hash }
   its(:count){ should eq 4 }
 
   it "should parse csv" do
-    Quandl::Data::Table.new(subject.to_csv).count.should eq 4
+    Quandl::Data.new(subject.to_csv).count.should eq 4
   end
   
   it "should convert to julian dates" do
@@ -29,11 +29,11 @@ describe Quandl::Data::Table do
       subject.transform(:rdiff).first[1].should_not eq value
     end
     it "should rdiff_from" do
-      data = Quandl::Data::Table.new([[1,3,5],[4,5,4],[5,15,20]])
+      data = Quandl::Data.new([[1,3,5],[4,5,4],[5,15,20]])
       data.transform(:rdiff_from).should eq [[1,4,3],[4,2,4],[5,0,0]]
     end
     it "should cumul" do
-      data = Quandl::Data::Table.new( [[1000, 10], [1001, 20], [1002, 30]] )
+      data = Quandl::Data.new( [[1000, 10], [1001, 20], [1002, 30]] )
       data.transform(:cumul).should eq [[1000, 10], [1001, 30], [1002, 60]]
     end
   end
@@ -55,8 +55,8 @@ describe Quandl::Data::Table do
       data.should eq subject
     end
   
-    it "should output csv when initialized with a Data::Table" do
-      Quandl::Data::Table.new( subject ).to_csv.should eq subject.to_csv
+    it "should output csv when initialized with a Quandl::Data" do
+      Quandl::Data.new( subject ).to_csv.should eq subject.to_csv
     end
     
   end
@@ -84,7 +84,7 @@ describe Quandl::Data::Table do
   describe "trim_end" do
   
     it "should delete everything after trim_end" do
-      data = Quandl::Fabricate::Data::Table.rand( nils: false, rows: 10, columns: 1 ).sort_descending
+      data = Quandl::Fabricate::Data.rand( nils: false, rows: 10, columns: 1 ).sort_descending
       date = data[1][0]
       data.trim_end!(date)
       data.data_array.should be_a Array
@@ -110,7 +110,7 @@ describe Quandl::Data::Table do
   describe "trim_start" do
   
     it "should delete everything before trim_start" do
-      data = Quandl::Fabricate::Data::Table.rand( nils: false, rows: 10, columns: 1 ).sort_descending
+      data = Quandl::Fabricate::Data.rand( nils: false, rows: 10, columns: 1 ).sort_descending
       date = data[-2][0]
       data.trim_start(date).count.should eq 9
     end
