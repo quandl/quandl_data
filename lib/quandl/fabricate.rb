@@ -1,5 +1,6 @@
+require 'quandl/fabricate/data'
+
 module Quandl
-module Fabricate
-  require 'quandl/fabricate/data'
+module Fabricate  
 end
 end

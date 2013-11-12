@@ -1,4 +1,6 @@
-class Quandl::Fabricate::Data
+module Quandl
+module Fabricate
+class Data
   
   def self.rand(*args)
     new(*args).random
@@ -86,4 +88,6 @@ class Quandl::Fabricate::Data
     end
   end
 
+end
+end
 end
