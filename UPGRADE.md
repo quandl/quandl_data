@@ -1,3 +1,8 @@
+## 1.1.2
+
+* bump quandl_operation && quandl_logger
+
+
 ## 1.1.0
 
 * it rejects invalid transforms
