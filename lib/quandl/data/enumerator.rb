@@ -2,7 +2,6 @@ module Quandl::Data::Enumerator
   extend ActiveSupport::Concern
   
   included do
-    
     delegate *Array.forwardable_methods, to: :data_array
   
     delegate :to_json, :as_json, to: :data_array
