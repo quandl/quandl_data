@@ -1,3 +1,9 @@
+## 1.1.4
+
+* force incoming data to_a if it is kind_of Quandl::Data
+* write failing specs for random cases where Quandl::Data.new given Date, JulianDate, Integer
+
+
 ## 1.1.2
 
 * bump quandl_operation && quandl_logger
