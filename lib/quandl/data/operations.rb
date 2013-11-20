@@ -143,7 +143,7 @@ module Quandl::Data::Operations
   end
   
   def parse(data)
-    data = data.to_a if data.respond_to?(:to_a)
+    data = data.to_a if data.respond_to?(:to_a) && data.is_a?(Quandl::Data)
     data = Parse.perform( data )
     data
   end

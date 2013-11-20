@@ -1,5 +1,7 @@
-require 'simplecov'
-SimpleCov.start
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start
+end
 
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
@@ -8,3 +10,4 @@ require "csv"
 require "json"
 require 'quandl/fabricate'
 require "quandl/data"
+require 'pry'
