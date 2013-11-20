@@ -13,4 +13,22 @@ describe Quandl::Data::Enumerator do
     it{ should eq data.data_array }
   end
 
+  [nil, :to_jd, :to_date].each do |date_format|
+    [nil, :to_a, :to_csv].each do |format|
+      describe ".new(data.#{date_format}.#{format})" do
+        subject{
+          raw = data
+          raw = data.send(date_format) if date_format.present?
+          raw = data.send(format) if format.present?
+          Quandl::Data.new(raw)
+        }
+    
+        its('to_jd.first.first'){ should be_a Integer }
+        its('to_date.first.first'){ should be_a Date }
+    
+      end
+      
+    end
+  end
+  
 end
