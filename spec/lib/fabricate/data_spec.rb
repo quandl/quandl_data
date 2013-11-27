@@ -13,7 +13,7 @@ describe Quandl::Fabricate::Data do
     subject{ data.first }
     its(:count){ should eq 6 }
     
-    its([0]){ should be_a Integer }
+    its([0]){ should be_a Date }
     
     [1,2,3,4,5].each do |i|
       its([i]){ should be_a Float }

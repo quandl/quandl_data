@@ -24,6 +24,11 @@ describe Quandl::Data::Enumerator do
         }
         subject{ Quandl::Data.new(raw.clone) }
         
+        it "subject.to_jd.first.first" do
+          # binding.pry if date_format == nil && format == :to_csv
+          puts subject.to_jd.first.first
+        end
+        
         its('to_jd.first.first'){ should be_a Integer }
         its('to_date.first.first'){ should be_a Date }
     

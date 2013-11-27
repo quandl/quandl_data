@@ -54,12 +54,12 @@ describe Quandl::Data::Operations do
       subject.transform(:rdiff).first[1].should_not eq value
     end
     it "should rdiff_from" do
-      data = Quandl::Data.new([[1,3,5],[4,5,4],[5,15,20]])
-      data.transform(:rdiff_from).should eq [[1,4,3],[4,2,4],[5,0,0]]
+      data = Quandl::Data.new([[2456624,3,5],[2456625,5,4],[2456626,15,20]])
+      data.transform(:rdiff_from).to_jd.should eq [[2456624,4,3],[2456625,2,4],[2456626,0,0]]
     end
     it "should cumul" do
-      data = Quandl::Data.new( [[1000, 10], [1001, 20], [1002, 30]] )
-      data.transform(:cumul).should eq [[1000, 10], [1001, 30], [1002, 60]]
+      data = Quandl::Data.new( [[2456624, 10], [2456625, 20], [2456626, 30]] )
+      data.transform(:cumul).to_jd.should eq [[2456624, 10], [2456625, 30], [2456626, 60]]
     end
   end
   
@@ -79,7 +79,7 @@ describe Quandl::Data::Operations do
   
   describe "#as_json" do
     it "should be a representation of data_array" do
-      subject.as_json.should eq subject.data_array
+      subject.as_json.should eq subject.data_array.as_json
     end
   end
   
@@ -137,9 +137,21 @@ describe Quandl::Data::Operations do
     
     its(:to_csv){ should be_a String }
     
-    it "should output csv that is consistent with subject" do
-      data = CSV.parse( subject.to_csv ).collect{|r| r.collect{|v| v.to_f } }
-      data.should eq subject
+    it "should output jd csv that is consistent with subject" do
+      expected_data = subject.to_jd
+      data = CSV.parse( expected_data.to_csv ).collect{|r| r.collect{|v| v.to_f } }
+      data.should eq expected_data
+    end
+    
+    it "should output date csv that is consistent with subject" do
+      expected_data = subject.to_date
+      data = CSV.parse( expected_data.to_csv ).collect{|r|
+        date = Date.parse(r[0])
+        row = r[1..-1].collect{|v| v.to_f }
+        row.unshift(date)
+        row
+      }
+      data.should eq expected_data
     end
   
     it "should output csv when initialized with a Quandl::Data" do

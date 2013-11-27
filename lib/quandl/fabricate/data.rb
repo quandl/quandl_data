@@ -38,7 +38,7 @@ class Data
   end
 
   def date(index)
-    (Date.today - ( index * ( frequencies[frequency] ) - offset )).jd
+    (Date.today - ( index * ( frequencies[frequency] ) - offset ))
   end
 
   def point(row_index, column_index)

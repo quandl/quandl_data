@@ -10,10 +10,8 @@ module Quandl::Data::Operations
     end
     
     def operations
-      [
-        :to_csv, :to_jd, :to_date, :sort_order, :sort_ascending, 
-        :sort_descending, :transform, :collapse, :frequency, :parse
-      ]
+      [ :to_csv, :to_jd, :to_date, :sort_order, :sort_ascending, 
+        :sort_descending, :transform, :collapse, :frequency, :parse ]
     end
     
   end
@@ -32,64 +30,38 @@ module Quandl::Data::Operations
     return ''
   end
   
-  def to_jd
-    Quandl::Data.new( Parse.date_to_julian( data_array ), frequency: frequency )
-  end
   def to_jd!
-    @data_array = Parse.date_to_julian( data_array )
-    self
+    @data_array = Parse.to_jd( data_array ); self
   end
-
+  
   def to_date!
-    @data_array = to_date.data_array
-    self
-  end
-  def to_date
-    Quandl::Data.new( Parse.julian_to_date( data_array ) )
+    @data_array = Parse.to_date( data_array ); self
   end
   
-  def trim_start!(trim_date)
-    @data_array = trim_start(trim_date).data_array
-    self
-  end
-  def trim_start(trim_date)
+  def trim_start!(date)
     # date format
-    trim_date = Date.parse(trim_date) if trim_date.is_a?(String)
-    trim_date = trim_date.jd if trim_date.respond_to?(:jd)
-    # find index
-    return self unless trim_date.is_a?(Integer)
+    date = Quandl::Operation::QDate.parse(date)
     # reject rows with dates less than
-    data = sort_descending.delete_if do |row|
+    @data_array = to_date!.sort_descending!.delete_if do |row|
       row_date = row[0]
-      row_date < trim_date
+      row_date < date
     end
-    Quandl::Data.new(data)
+    self
   end
   
-  def trim_end!(trim_date)
-    @data_array = trim_end(trim_date).data_array
-    self
-  end
-  def trim_end(trim_date)
+  def trim_end!(date)
     # date format
-    trim_date = Date.parse(trim_date) if trim_date.is_a?(String)
-    trim_date = trim_date.jd if trim_date.respond_to?(:jd)
-    # find index
-    return self unless trim_date.is_a?(Integer)
+    date = Quandl::Operation::QDate.parse(date)
     # reject rows with dates less than
-    data = sort_descending.delete_if do |row|
+    @data_array = to_date!.sort_descending!.delete_if do |row|
       row_date = row[0]
-      row_date > trim_date
+      row_date > date
     end
-    Quandl::Data.new(data)
+    self
   end
   
   def limit!(amount)
-    @data_array = limit(amount).data_array
-    self
-  end
-  def limit(amount)
-    Quandl::Data.new( data_array[0..( amount.to_i - 1 )] )
+    @data_array = data_array[0..( amount.to_i - 1 )]; self
   end
   
   def sort_order(dir)
@@ -97,19 +69,11 @@ module Quandl::Data::Operations
   end
   
   def sort_ascending!
-    @data_array = sort_ascending.data_array
-    self
-  end
-  def sort_ascending
-    Quandl::Data.new( Parse.sort( data_array.dup, :asc ), frequency: frequency )
+    @data_array = Parse.sort_asc( data_array ); self
   end
 
   def sort_descending!
-    @data_array = sort_descending.data_array
-    self
-  end
-  def sort_descending
-    Quandl::Data.new( Parse.sort( data_array.dup, :desc ), frequency: frequency )
+    @data_array = Parse.sort_desc( data_array ); self
   end
   
   def transform(*args)
@@ -139,13 +103,32 @@ module Quandl::Data::Operations
     @frequency ||= Collapse.frequency?( data_array )
   end
   def frequency=(value)
-    @frequency = value.to_sym
+    @frequency = value.to_sym if value.present?
   end
   
-  def parse(data)
-    data = data.to_a if data.respond_to?(:to_a) && data.is_a?(Quandl::Data)
-    data = Parse.perform( data )
-    data
+  def clone
+    Quandl::Data.new( data_array.dup )
   end
   
+  def to_jd
+    clone.to_jd!
+  end
+  def to_date
+    clone.to_date!
+  end
+  def trim_start(date)
+    clone.trim_start!(date)
+  end
+  def trim_end(date)
+    clone.trim_end!(date)
+  end
+  def limit(amount)
+    clone.limit!(amount)
+  end
+  def sort_ascending
+    clone.sort_ascending!
+  end
+  def sort_descending
+    clone.sort_descending!
+  end
 end
