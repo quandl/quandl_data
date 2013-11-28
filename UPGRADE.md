@@ -1,6 +1,6 @@
 ## 1.2.0
 
-* bump quandl_operation, data now defaults to return Dates instead of Julian Dates
+* bump quandl_operation, data returns Dates instead of Julian Dates
 
 
 ## 1.1.4
