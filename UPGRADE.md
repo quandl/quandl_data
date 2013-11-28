@@ -1,3 +1,8 @@
+## 1.2.0
+
+* bump quandl_operation, data now defaults to return Dates instead of Julian Dates
+
+
 ## 1.1.4
 
 * force incoming data to_a if it is kind_of Quandl::Data
