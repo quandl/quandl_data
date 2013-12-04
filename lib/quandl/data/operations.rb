@@ -38,6 +38,10 @@ module Quandl::Data::Operations
     @data_array = Parse.to_date( data_array ); self
   end
   
+  def to_date_str!
+    @data_array = to_date!.collect{|r| r = r.dup; r[0] = r[0].to_s; r }; self
+  end
+  
   def trim_start!(date)
     # date format
     date = Quandl::Operation::QDate.parse(date)
@@ -115,6 +119,9 @@ module Quandl::Data::Operations
   end
   def to_date
     clone.to_date!
+  end
+  def to_date_str
+    clone.to_date_str!
   end
   def trim_start(date)
     clone.trim_start!(date)

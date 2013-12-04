@@ -40,7 +40,7 @@ describe Quandl::Data do
     end
   end
   
-  [:to_jd, :sort_ascending, :sort_descending].each do |o1|
+  [:to_jd, :sort_ascending, :sort_descending, :to_date_str].each do |o1|
     its("to_jd.#{o1}!"){ should_not eq subject }
     its("#{o1}!"){ should eq subject }
   end
