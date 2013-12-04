@@ -1,3 +1,8 @@
+## 1.2.1
+
+* add Data#to_date_str that returns data as "yyyy-mm-dd"
+
+
 ## 1.2.0
 
 * bump quandl_operation, data returns Dates instead of Julian Dates
