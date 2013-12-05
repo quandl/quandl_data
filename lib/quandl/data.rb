@@ -11,6 +11,10 @@ require 'quandl/data/enumerator'
 require 'quandl/data/operations'
 require 'quandl/data/logging'
 
+require 'quandl/data/date'
+require 'quandl/data/value'
+require 'quandl/data/parse'
+
 class Quandl::Data
   include Enumerator
   include Operations

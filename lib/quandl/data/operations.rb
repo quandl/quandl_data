@@ -1,7 +1,6 @@
 module Quandl::Data::Operations
   
   extend ActiveSupport::Concern
-  include Quandl::Operation
 
   module ClassMethods
     
@@ -31,11 +30,11 @@ module Quandl::Data::Operations
   end
   
   def to_jd!
-    @data_array = Parse.to_jd( data_array ); self
+    @data_array = Quandl::Operation::Parse.to_jd( data_array ); self
   end
   
   def to_date!
-    @data_array = Parse.to_date( data_array ); self
+    @data_array = Quandl::Operation::Parse.to_date( data_array ); self
   end
   
   def to_date_str!
@@ -73,11 +72,11 @@ module Quandl::Data::Operations
   end
   
   def sort_ascending!
-    @data_array = Parse.sort_asc( data_array ); self
+    @data_array = Quandl::Operation::Parse.sort_asc( data_array ); self
   end
 
   def sort_descending!
-    @data_array = Parse.sort_desc( data_array ); self
+    @data_array = Quandl::Operation::Parse.sort_desc( data_array ); self
   end
   
   def transform(*args)
@@ -86,9 +85,9 @@ module Quandl::Data::Operations
     self
   end
   def transform=(value)
-    return false unless Transform.valid?(value)
+    return false unless Quandl::Operation::Transform.valid?(value)
     @transform = value
-    @data_array = Transform.perform( data_array, value )
+    @data_array = Quandl::Operation::Transform.perform( data_array, value )
   end
 
   def collapse(*args)
@@ -97,14 +96,14 @@ module Quandl::Data::Operations
     self
   end
   def collapse=(collapse)
-    return false unless Collapse.valid?(collapse)
+    return false unless Quandl::Operation::Collapse.valid?(collapse)
     @collapse = collapse
     @frequency = collapse
-    @data_array = Collapse.perform( data_array, collapse )
+    @data_array = Quandl::Operation::Collapse.perform( data_array, collapse )
   end
   
   def frequency
-    @frequency ||= Collapse.frequency?( data_array )
+    @frequency ||= Quandl::Operation::Collapse.frequency?( data_array )
   end
   def frequency=(value)
     @frequency = value.to_sym if value.present?
