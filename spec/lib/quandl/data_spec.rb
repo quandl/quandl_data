@@ -10,6 +10,16 @@ describe Quandl::Data do
   let(:data){ Quandl::Data.new(csv2) }
   subject{ data }
   
+  describe "#headers" do
+    subject{ Quandl::Data.new(csv3) }
+    let(:expectation){ ['Date', 'Column 1', 'Column 2', 'C3', 'C4', 'C5', 'C6', 'C7'] }
+    its(:headers){ should eq expectation }
+    
+    its('clone.headers'){ should eq expectation }
+    its('to_jd.headers'){ should eq expectation }
+
+  end
+  
   describe "#clone" do
     subject{ data.clone }
     it{ should be_a Quandl::Data }
@@ -33,10 +43,6 @@ describe Quandl::Data do
         end
       end
       
-    end
-    
-    it "csv3 should raise Quandl::Operation::Errors::UnknownDateFormat" do
-      expect { Quandl::Data.new( csv3 ).to_jd }.to raise_error Quandl::Errors::UnknownDateFormat
     end
   end
   

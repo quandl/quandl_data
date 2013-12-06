@@ -1,8 +1,17 @@
-module Quandl::Data::Operations
+module Quandl
+class Data
+module Operations
   
   extend ActiveSupport::Concern
 
   module ClassMethods
+    
+    def new_with_jd(*args)
+      # force data to date
+      args[0] = Format.to_date( args[0] )
+      # onwards
+      self.new( *args )
+    end
     
     def forwardable_methods
       @forwardable_methods ||= (operations + operations.collect{|o| "#{o}!" if method_defined?("#{o}!") }).compact
@@ -110,7 +119,7 @@ module Quandl::Data::Operations
   end
   
   def clone
-    Quandl::Data.new( data_array.dup )
+    Quandl::Data.new_with_jd( data_array.dup, headers: headers )
   end
   
   def to_jd
@@ -137,4 +146,7 @@ module Quandl::Data::Operations
   def sort_descending
     clone.sort_descending!
   end
+  
+end
+end
 end
