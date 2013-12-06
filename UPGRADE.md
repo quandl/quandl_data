@@ -1,3 +1,11 @@
+## 1.3.0
+
+* bump Quandl::Operation to 0.3.0 for Quandl::Operation::Sort
+* refactor sorting into Quandl::Operation::Sort
+* import Quandl::Data::Format from Quandl::Operation
+* remove data parse
+
+
 ## 1.2.1
 
 * add Data#to_date_str that returns data as "yyyy-mm-dd"
