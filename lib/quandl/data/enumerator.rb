@@ -5,7 +5,7 @@ module Quandl::Data::Enumerator
     delegate *Array.forwardable_methods, to: :data_array
   
     delegate :to_json, :as_json, to: :data_array
-  
+    
     attr_accessor :pristine_data
   end
   
@@ -15,11 +15,11 @@ module Quandl::Data::Enumerator
   end
   
   def data_array
-    @data_array ||= parse( pristine_data )
+    @data_array ||= clean( pristine_data )
   end
 
   def data_array=(data)
-    @data_array = parse(data)
+    @data_array = clean(data)
   end
   
   def data_array?
@@ -40,15 +40,6 @@ module Quandl::Data::Enumerator
     attrs.each do |name, value|
       self.send("#{name}=", value) if self.respond_to?("#{name}=")
     end
-  end
-  
-  protected
-  
-  def parse(data)
-    data = data.to_a if data.respond_to?(:to_a) && data.is_a?(Quandl::Data)
-    data = CSV.parse( data ) if data.is_a?(String)
-    data = Quandl::Babelfish.clean( data )
-    data
   end
   
 end
