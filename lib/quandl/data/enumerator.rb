@@ -46,7 +46,8 @@ module Quandl::Data::Enumerator
   
   def parse(data)
     data = data.to_a if data.respond_to?(:to_a) && data.is_a?(Quandl::Data)
-    data = Quandl::Data::Format.parse( data )
+    data = CSV.parse( data ) if data.is_a?(String)
+    data = Quandl::Babelfish.clean( data )
     data
   end
   

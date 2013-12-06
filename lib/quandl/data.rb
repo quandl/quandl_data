@@ -6,6 +6,7 @@ require "active_support/core_ext/hash"
 require "active_support/core_ext/object"
 
 require "quandl/operation"
+require "quandl/babelfish"
 
 require 'quandl/errors/unknown_date_format'
 

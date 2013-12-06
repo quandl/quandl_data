@@ -6,4 +6,5 @@ local_gem_dir = ENV['BUNDLE_LOCAL_DIR']
 
 if use_local_gems
   gem 'quandl_operation', path: "#{local_gem_dir}/quandl/operation"
+  gem 'quandl_babelfish', path: "#{local_gem_dir}/quandl/babelfish"
 end
