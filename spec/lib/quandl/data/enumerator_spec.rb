@@ -31,7 +31,7 @@ describe Quandl::Data::Enumerator do
         
         its('to_jd.first.first'){ should be_a Integer }
         its('to_date.first.first'){ should be_a Date }
-    
+        
       end
       
     end

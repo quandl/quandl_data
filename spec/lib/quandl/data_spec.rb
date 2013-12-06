@@ -36,7 +36,7 @@ describe Quandl::Data do
     end
     
     it "csv3 should raise Quandl::Operation::Errors::UnknownDateFormat" do
-      expect { Quandl::Data.new( csv3 ).to_jd }.to raise_error Quandl::Operation::Errors::UnknownDateFormat
+      expect { Quandl::Data.new( csv3 ).to_jd }.to raise_error Quandl::Errors::UnknownDateFormat
     end
   end
   

@@ -30,11 +30,11 @@ module Quandl::Data::Operations
   end
   
   def to_jd!
-    @data_array = Quandl::Operation::Parse.to_jd( data_array ); self
+    @data_array = Quandl::Data::Format.to_jd( data_array ); self
   end
   
   def to_date!
-    @data_array = Quandl::Operation::Parse.to_date( data_array ); self
+    @data_array = Quandl::Data::Format.to_date( data_array ); self
   end
   
   def to_date_str!
@@ -72,11 +72,11 @@ module Quandl::Data::Operations
   end
   
   def sort_ascending!
-    @data_array = Quandl::Operation::Parse.sort_asc( data_array ); self
+    @data_array = Quandl::Data::Format.sort_asc( data_array ); self
   end
 
   def sort_descending!
-    @data_array = Quandl::Operation::Parse.sort_desc( data_array ); self
+    @data_array = Quandl::Data::Format.sort_desc( data_array ); self
   end
   
   def transform(*args)

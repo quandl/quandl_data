@@ -46,7 +46,7 @@ module Quandl::Data::Enumerator
   
   def parse(data)
     data = data.to_a if data.respond_to?(:to_a) && data.is_a?(Quandl::Data)
-    data = Quandl::Operation::Parse.perform( data )
+    data = Quandl::Data::Format.parse( data )
     data
   end
   

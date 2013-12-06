@@ -7,13 +7,12 @@ require "active_support/core_ext/object"
 
 require "quandl/operation"
 
+require 'quandl/errors/unknown_date_format'
+
 require 'quandl/data/enumerator'
 require 'quandl/data/operations'
+require 'quandl/data/format'
 require 'quandl/data/logging'
-
-require 'quandl/data/date'
-require 'quandl/data/value'
-require 'quandl/data/parse'
 
 class Quandl::Data
   include Enumerator
