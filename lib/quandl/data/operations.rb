@@ -72,11 +72,11 @@ module Quandl::Data::Operations
   end
   
   def sort_ascending!
-    @data_array = Quandl::Data::Format.sort_asc( data_array ); self
+    @data_array = Quandl::Operation::Sort.asc( data_array ); self
   end
 
   def sort_descending!
-    @data_array = Quandl::Data::Format.sort_desc( data_array ); self
+    @data_array = Quandl::Operation::Sort.desc( data_array ); self
   end
   
   def transform(*args)
@@ -87,7 +87,7 @@ module Quandl::Data::Operations
   def transform=(value)
     return false unless Quandl::Operation::Transform.valid?(value)
     @transform = value
-    @data_array = Quandl::Operation::Transform.perform( data_array, value )
+    @data_array = Quandl::Operation::Transform.perform( to_jd.to_a, value )
   end
 
   def collapse(*args)
@@ -99,7 +99,7 @@ module Quandl::Data::Operations
     return false unless Quandl::Operation::Collapse.valid?(collapse)
     @collapse = collapse
     @frequency = collapse
-    @data_array = Quandl::Operation::Collapse.perform( data_array, collapse )
+    @data_array = Quandl::Operation::Collapse.perform( to_jd.to_a, collapse )
   end
   
   def frequency
