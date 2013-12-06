@@ -21,6 +21,8 @@ module Babelfisher
     return data.data_array if data.is_a?(Quandl::Data)
     # Quandl::Babelfish::Data is already clean
     return data if data.is_a?(Quandl::Babelfish::Data)
+    # Return empty array if given empty string, nil, etc.
+    return [] if data.blank?
     # otherwise parse and clean
     data = CSV.parse( data ) if data.is_a?(String)
     data = Quandl::Babelfish.clean( data )
