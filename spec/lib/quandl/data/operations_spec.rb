@@ -54,12 +54,12 @@ describe Quandl::Data::Operations do
       subject.transform(:rdiff).first[1].should_not eq value
     end
     it "should rdiff_from" do
-      data = Quandl::Data.new_with_jd([[2456624,3,5],[2456625,5,4],[2456626,15,20]])
-      data.transform(:rdiff_from).to_jd.should eq [[2456624,4,3],[2456625,2,4],[2456626,0,0]]
+      data = Quandl::Data.new [["2013-11-27", 3.0, 5.0], ["2013-11-28", 5.0, 4.0], ["2013-11-29", 15.0, 20.0]]
+      data.transform(:rdiff_from).to_date_str.should eq [["2013-11-27", 4.0, 3.0], ["2013-11-28", 2.0, 4.0], ["2013-11-29", 0.0, 0.0]]
     end
     it "should cumul" do
-      data = Quandl::Data.new_with_jd( [[2456624, 10], [2456625, 20], [2456626, 30]] )
-      data.transform(:cumul).to_jd.should eq [[2456624, 10], [2456625, 30], [2456626, 60]]
+      data = Quandl::Data.new [["2013-11-27", 10.0], ["2013-11-28", 20.0], ["2013-11-29", 30.0]]
+      data.transform(:cumul).to_date_str.should eq [["2013-11-27", 10.0], ["2013-11-28", 30.0], ["2013-11-29", 60.0]]
     end
   end
   

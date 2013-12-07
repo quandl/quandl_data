@@ -32,10 +32,6 @@ describe Quandl::Data::Format do
     subject.hash_to_array( hash_data ).should eq array_data
   end
   
-  it "#csv outputs array" do
-    subject.csv_to_array( csv_data ).should eq array_data
-  end
-  
   describe "#parse" do
   
     [:csv, :hash, :array, :julian, :date].each do |type|
