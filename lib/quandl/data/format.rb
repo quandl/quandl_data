@@ -8,7 +8,7 @@ class Format
       return [] if data.blank?
       data = hash_to_array(data)
       data = csv_to_array(data)
-      # data = to_jd(data)
+      data = values_to_float(data)
       data = to_date(data)
       data.dup
     end
@@ -23,7 +23,6 @@ class Format
         data = data.gsub('\n', "\n")
         data = CSV.parse( data )
       end
-      data = values_to_float(data)
       data
     end
     
