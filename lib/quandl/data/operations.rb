@@ -88,6 +88,13 @@ module Operations
     @data_array = Quandl::Operation::Sort.desc( data_array ); self
   end
   
+  def row(*args)
+    return @row if args[0].nil?
+    @row = args[0]
+    @data_array = [data_array[ args[0] ]]
+    self
+  end
+  
   def transform(*args)
     return @transform unless args.first.present?
     self.transform = args.first
@@ -96,7 +103,8 @@ module Operations
   def transform=(value)
     return false unless Quandl::Operation::Transform.valid?(value)
     @transform = value
-    @data_array = Quandl::Operation::Transform.perform( to_jd.to_a, value )
+    @data_array = Quandl::Operation::Transform.perform( data_array, value )
+    @data_array
   end
 
   def collapse(*args)
@@ -108,7 +116,7 @@ module Operations
     return false unless Quandl::Operation::Collapse.valid?(collapse)
     @collapse = collapse
     @frequency = collapse
-    @data_array = Quandl::Operation::Collapse.perform( to_jd.to_a, collapse )
+    @data_array = Quandl::Operation::Collapse.perform( data_array, collapse )
   end
   
   def frequency
@@ -119,7 +127,7 @@ module Operations
   end
   
   def clone
-    Quandl::Data.new_with_jd( data_array.dup, headers: headers )
+    self.class.new( data_array.dup, headers: headers, cleaned: cleaned )
   end
   
   def to_jd
