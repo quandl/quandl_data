@@ -9,11 +9,6 @@ module Quandl::Data::Enumerator
     attr_accessor :pristine_data
   end
   
-  def initialize(*args)
-    self.pristine_data = args.first
-    self.attributes = args.extract_options!
-  end
-  
   def data_array
     @data_array ||= clean( pristine_data )
   end
@@ -26,20 +21,4 @@ module Quandl::Data::Enumerator
     @data_array.present?
   end
 
-  def attributes
-    @attributes ||= {}
-  end
-
-  def attributes=(attrs)
-    assign_attributes(attrs)
-    attributes
-  end
-  
-  # mass assignment protection
-  def assign_attributes(attrs)
-    attrs.each do |name, value|
-      self.send("#{name}=", value) if self.respond_to?("#{name}=")
-    end
-  end
-  
 end
