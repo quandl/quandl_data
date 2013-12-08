@@ -1,5 +1,5 @@
 module Quandl
-module Errors
+module Error
   class UnknownDateFormat < StandardError; end
 end
 end
