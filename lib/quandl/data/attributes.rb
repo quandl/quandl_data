@@ -4,6 +4,19 @@ module Attributes
   
   extend ActiveSupport::Concern
   
+  module ClassMethods
+    
+    def with_type(type)
+      type = type.to_s.downcase.to_sym
+      case type
+      when :dirty, :babelfish then Quandl::Babelfish::Data
+      else 
+        Quandl::Data 
+      end
+    end
+    
+  end
+  
   def initialize(*args)
     self.pristine_data = args.first
     self.attributes = args.extract_options!
