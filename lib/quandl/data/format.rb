@@ -185,7 +185,7 @@ class Format
       row = row.dup
       row[0] = row[0].to_i
       # dont allow dates that are before 0000
-      raise Quandl::Errors::UnknownDateFormat if row[0] <= 1721058
+      raise Quandl::Error::UnknownDateFormat if row[0] <= 1721058
       row
     end
     
@@ -196,7 +196,7 @@ class Format
       # split date into parts
       date_values = date.split('-').collect(&:to_i)
       # ensure date is valid
-      raise Quandl::Errors::UnknownDateFormat unless date_values.count == 3
+      raise Quandl::Error::UnknownDateFormat unless date_values.count == 3
       # add to row
       row[0] = Date.new( *date_values )
       row
@@ -207,7 +207,7 @@ class Format
     
     def raise_date_format_error!(row, index = 0, type = :none)
       message = "UnknownDateFormat: '#{row[0]}', index: data[#{index}][0], strategy: '#{type}', row: #{row}"
-      raise Quandl::Errors::UnknownDateFormat, message
+      raise Quandl::Error::UnknownDateFormat, message
     end
     
   end

@@ -7,7 +7,7 @@ require "active_support/core_ext/object"
 
 require "quandl/operation"
 
-require 'quandl/errors/unknown_date_format'
+require 'quandl/error/unknown_date_format'
 
 require 'quandl/data/attributes'
 require 'quandl/data/cleaning'

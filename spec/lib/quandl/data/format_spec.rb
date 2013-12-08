@@ -71,8 +71,8 @@ describe Quandl::Data::Format do
     let(:invalid2){ "2012-03-07,,69.75,69.75,69.75,0.0,0.0,0.0\nDate, Column 1, Column 2, C3, C4, C5, C6, C7\n2012-03-06,69.75,69.75,69.75,69.75,0.0,0.0,0.0\n2012-03-05,69.75,69.75,69.75,69.75,0.0,0.0,0.0\n2012-03-04,69.75,69.75,69.75,69.75,0.0,0.0,0.0\n2012-02-29,,69.75,69.75,69.75,0.0,0.0,0.0\n2012-02-28,69.75,69.75,69.75,69.75,0.0,0.0,0.0\n" }
     
     [:invalid1, :invalid2].each do |type|
-      it "#{type} should raise Quandl::Errors::UnknownDateFormat" do
-        expect {  Quandl::Data::Format.parse( self.send(type) ) }.to raise_error Quandl::Errors::UnknownDateFormat
+      it "#{type} should raise Quandl::Error::UnknownDateFormat" do
+        expect {  Quandl::Data::Format.parse( self.send(type) ) }.to raise_error Quandl::Error::UnknownDateFormat
       end
     end
     
