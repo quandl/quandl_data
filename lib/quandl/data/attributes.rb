@@ -10,10 +10,8 @@ module Attributes
   end
   
   def headers=(value)
-    # reject headers unless array
-    return unless value.kind_of?(Array)
-    # assign
-    @headers = value.flatten
+    # only assign arrays
+    @headers = value.flatten if value.kind_of?(Array)
   end
   def headers
     @headers

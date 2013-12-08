@@ -6,11 +6,9 @@ require "active_support/core_ext/hash"
 require "active_support/core_ext/object"
 
 require "quandl/operation"
-require "quandl/babelfish"
 
 require 'quandl/errors/unknown_date_format'
 
-# require 'quandl/data/babelfisher'
 require 'quandl/data/attributes'
 require 'quandl/data/cleaning'
 require 'quandl/data/enumerator'
@@ -20,7 +18,6 @@ require 'quandl/data/logging'
 
 module Quandl
 class Data
-  # include Babelfisher
   include Attributes
   include Cleaning
   include Enumerator
