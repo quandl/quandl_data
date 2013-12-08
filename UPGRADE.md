@@ -1,5 +1,10 @@
 ## 1.3.0
 
+* string_to_csv will not force values to float
+* add #row to Operations
+* add cleaned? cleaned! for tracking whether or not a Quandl::Data instance has already been cleaned
+* replace parse with babelfish#clean
+* add Quandl::Babelfish.clean to replace Quandl::Data::Format.parse
 * bump Quandl::Operation to 0.3.0 for Quandl::Operation::Sort
 * refactor sorting into Quandl::Operation::Sort
 * import Quandl::Data::Format from Quandl::Operation
