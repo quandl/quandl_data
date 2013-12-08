@@ -27,7 +27,6 @@ module Babelfisher
   protected
   
   def clean(data)
-    t1 = Time.now
     # skip cleaning if already clean
     return data if data.kind_of?(Array) && cleaned?
     # Quandl::Data is already clean, but to avoid errors extract internal array
@@ -46,8 +45,6 @@ module Babelfisher
     cleaned!
     # return data
     data
-  ensure
-    puts "clean #{t1.elapsed_ms} #{data.count}" if t1.elapsed > 0.01
   end
 
   def cleaned!
