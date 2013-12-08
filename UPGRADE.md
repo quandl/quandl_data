@@ -1,3 +1,10 @@
+## 1.3.1
+
+* add .with_type to Data
+* revise errors to Error for consistency
+* refactor babelfish out of data, remove babelfisher
+
+
 ## 1.3.0
 
 * string_to_csv will not force values to float
