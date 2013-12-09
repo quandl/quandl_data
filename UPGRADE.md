@@ -1,3 +1,9 @@
+## 1.3.4
+
+* add #to_precision(Integer)
+* fabricated data is forced to precision 14
+
+
 ## 1.3.3
 
 * integrate Babelfish.clean as part of Quandl::Data.clean method.
