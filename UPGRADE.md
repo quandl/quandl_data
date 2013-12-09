@@ -1,3 +1,9 @@
+## 1.3.3
+
+* integrate Babelfish.clean as part of Quandl::Data.clean method.
+* Remove Quandl::Babelfish::Data
+
+
 ## 1.3.2
 
 * readd quandl_babelfish as a dependency
