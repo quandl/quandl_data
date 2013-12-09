@@ -88,6 +88,10 @@ module Operations
     @data_array = Quandl::Operation::Sort.desc( data_array ); self
   end
   
+  def to_precision!(value)
+    @data_array = Quandl::Operation::Value.precision(data_array, value); self
+  end
+  
   def row(*args)
     return @row if args[0].nil?
     @row = args[0]
@@ -130,6 +134,9 @@ module Operations
     self.class.new( data_array.dup, headers: headers, cleaned: cleaned )
   end
   
+  def to_precision(value)
+    clone.to_precision!(value)
+  end
   def to_jd
     clone.to_jd!
   end

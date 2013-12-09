@@ -17,6 +17,13 @@ describe Quandl::Data::Operations do
     subject.limit(2).count.should eq 2
   end
   
+  describe "#to_precision" do
+    it "should set the precision" do
+      raw = '1998,10.293842930288591859035,1200.293842930288591859035'
+      Quandl::Data.new(raw).to_precision(6).to_date_str.should eq [["1998-12-31", 10.2938, 1200.29]]
+    end
+  end
+  
   describe "#collapse=" do
 
     it "should collapse to monthly" do
