@@ -57,6 +57,12 @@ class Format
       data
     end
     
+    def recognized_date?( value )
+      return true if value.is_a?(Date)
+      return true if value.is_a?(String) && value =~ /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/
+      false
+    end
+    
     def date_format?(data)
       value = data[0][0]
       # julian date?

@@ -8,7 +8,6 @@ require "active_support/core_ext/object"
 require "quandl/operation"
 
 require 'quandl/babelfish'
-require 'quandl/babelfish/data'
 
 require 'quandl/error/unknown_date_format'
 
