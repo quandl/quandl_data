@@ -1,3 +1,9 @@
+## 1.3.2
+
+* readd quandl_babelfish as a dependency
+* Add Quandl::Babelfish::Data
+
+
 ## 1.3.1
 
 * add .with_type to Data
