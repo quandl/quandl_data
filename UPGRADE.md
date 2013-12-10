@@ -1,3 +1,10 @@
+## 1.3.5
+
+* add Validations, #valid? #errors
+* add Data#to_table that returns self. Useful in conjunction with search scopes
+* refactor format errors to be raised with line, context, row
+
+
 ## 1.3.4
 
 * add #to_precision(Integer)
