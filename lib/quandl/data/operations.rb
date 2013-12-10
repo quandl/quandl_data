@@ -38,6 +38,10 @@ module Operations
     return ''
   end
   
+  def to_table
+    self
+  end
+  
   def to_jd!
     @data_array = Quandl::Data::Format.to_jd( data_array ); self
   end
