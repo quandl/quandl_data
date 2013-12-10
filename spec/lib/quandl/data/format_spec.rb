@@ -72,7 +72,7 @@ describe Quandl::Data::Format do
     
     [:invalid1, :invalid2].each do |type|
       it "#{type} should raise Quandl::Error::UnknownDateFormat" do
-        expect {  Quandl::Data::Format.parse( self.send(type) ) }.to raise_error Quandl::Error::UnknownDateFormat
+        expect {  Quandl::Data::Format.parse( self.send(type) ) }.to raise_error Quandl::Error::DateParseError
       end
     end
     
