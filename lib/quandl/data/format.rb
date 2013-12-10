@@ -35,7 +35,7 @@ class Format
       when :date            then return data
       when :date_string     then return date_strings_to_date( data )
       when :jd, :jd_string  then return jds_to_date( data )
-      when :unknown         then raise_date_format_error!( data[0] )
+      when :unknown         then raise_date_parse_error!( data[0] )
       end
       # return data
       data
@@ -51,7 +51,7 @@ class Format
       when :jd_string   then return jd_strings_to_jd( data )
       when :date        then return dates_to_jd( data )
       when :date_string then return date_strings_to_jd( data )
-      when :unknown     then raise_date_format_error!( data[0] )
+      when :unknown     then raise_date_parse_error!( data[0] )
       end
       # return data
       data
@@ -104,7 +104,7 @@ class Format
       # otherwise cast string jds to int
       output = []
       data.each_with_index do |row, index|
-        output << parse_jd_string(row) rescue raise_date_format_error!( row, index, :jd_strings_to_jd )
+        output << parse_jd_string(row, index)
       end
       output
     end
@@ -115,7 +115,7 @@ class Format
       # otherwise cast string jds to int
       output = []
       data.each_with_index do |row, index|
-        row = parse_date_string(row) rescue raise_date_format_error!( row, index, :date_strings_to_jd )
+        row = parse_date_string(row, index)
         row[0] = row[0].jd
         output << row
       end
@@ -131,7 +131,7 @@ class Format
       return data if data_missing_rows?(data) || data[0][0].is_a?(Date)
       output = []
       data.each_with_index do |row, index|
-        output << parse_jd(row) rescue raise_date_format_error!( row, index, :jds_to_date )
+        output << parse_jd(row, index)
       end
       output
     end
@@ -142,7 +142,7 @@ class Format
       # otherwise cast string jds to int
       output = []
       data.each_with_index do |row, index|
-        output << parse_date_string(row) rescue raise_date_format_error!( row, index, :date_strings_to_date )
+        output << parse_date_string(row, index)
       end
       output
     end
@@ -178,42 +178,63 @@ class Format
     
     protected
     
-    def parse_jd(row)
+    def parse_jd(row, index=nil)
       # parse jd_string
-      row = parse_jd_string(row)
+      row = parse_jd_string(row, index)
       # jd to date
       row[0] = Date.jd( row[0] )
       # onwards
       row
+    rescue => e
+      raise_jd_error!(row, index, e)
     end
     
-    def parse_jd_string(row)
+    def parse_jd_string(row, index=nil)
       row = row.dup
       row[0] = row[0].to_i
       # dont allow dates that are before 0000
-      raise Quandl::Error::UnknownDateFormat if row[0] <= 1721058
+      raise if row[0] <= 1721058
+      # onwards
       row
+    rescue => e
+      raise_jd_string_error!(row, index, e)
     end
     
-    def parse_date_string(row)
+    def parse_date_string(row, index=nil)
       row = row.dup
       # extract date
       date = row[0]
       # split date into parts
       date_values = date.split('-').collect(&:to_i)
-      # ensure date is valid
-      raise Quandl::Error::UnknownDateFormat unless date_values.count == 3
+      # ensure valid
+      raise unless date_values.count == 3
       # add to row
       row[0] = Date.new( *date_values )
       row
+    rescue => e
+      raise_date_string_error!(row, index, e)
     end
     
     
     private
     
-    def raise_date_format_error!(row, index = 0, type = :none)
-      message = "UnknownDateFormat: '#{row[0]}', index: data[#{index}][0], strategy: '#{type}', row: #{row}"
-      raise Quandl::Error::UnknownDateFormat, message
+    def raise_jd_error!(row, index, err)
+      raise Quandl::Error::DateParseError.new( line: index, context: 'parse_jd', row: row,  problem: err.message ), err.message
+    end
+    
+    def raise_jd_string_error!(row, index, err)
+      m = "Julian Date predates time. Expected <= 1721058 received '#{row[0]}'"
+      raise Quandl::Error::DateParseError.new( line: index, context: 'parse_jd_string', row: row, problem: m ), m
+    end
+    
+    def raise_date_string_error!(row, index, err)
+      m = "Invalid date segments. Expected yyyy-mm-dd received '#{row[0]}'"
+      raise Quandl::Error::DateParseError.new({ line: index, context: 'parse_date_string', row: row, problem: m }), m
+    end
+    
+    def raise_date_parse_error!(row, index = 0, type = :none)
+      m = "'#{row[0]}', index: data[#{index}][0] strategy: '#{type}', row: '#{row}'"
+      raise Quandl::Error::DateParseError.new({ line: index, context: 'date_parse_error', row: row, problem: m }), m
     end
     
   end
