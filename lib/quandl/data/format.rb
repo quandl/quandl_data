@@ -21,9 +21,17 @@ class Format
     def csv_to_array(data)
       if data.is_a?(String)
         data = data.gsub('\n', "\n")
-        data = CSV.parse( data )
+        data = CSV.parse( data, {col_sep: guess_csv_delimiter(data) } )
       end
       data
+    end
+    
+    def guess_csv_delimiter(data)
+      data = data.to_s
+      line_end = data.to_s.index("\n")
+      first_line = line_end.nil? ? data : data[0..line_end].to_s
+      return "\t" unless first_line.index("\t").nil?
+      ","
     end
     
     def to_date(data)
