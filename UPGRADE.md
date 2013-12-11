@@ -1,3 +1,8 @@
+## 1.3.6
+
+* Add #guess_csv_delimiter to Data::Format.
+
+
 ## 1.3.5
 
 * add Validations, #valid? #errors
