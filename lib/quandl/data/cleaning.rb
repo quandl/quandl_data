@@ -17,7 +17,7 @@ module Cleaning
   def ensure_data_is_cleaned
     data_array unless cleaned?
   end
-
+  
   protected
   
   def clean(data)
@@ -29,6 +29,9 @@ module Cleaning
     data = ensure_data_is_an_array(data)
     # clean with either format or babelfish
     known_format?( data ) ? clean_with_format(data) : clean_with_babelfish(data)
+    # rescue clean_with_format failure and try with babelfish
+  # rescue
+  #   clean_with_babelfish(data)
   end
   
   def ensure_data_requires_cleaning(data)
