@@ -128,7 +128,7 @@ module Operations
   end
   
   def frequency
-    @frequency ||= Quandl::Operation::Collapse.frequency?( data_array )
+    @frequency ||= Quandl::Babelfish.guess_frequency( data_array ).try(:to_sym)
   end
   def frequency=(value)
     @frequency = value.to_sym if value.present?
