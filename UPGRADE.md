@@ -1,3 +1,8 @@
+## 1.3.7
+
+* revise Quandl::Data#frequency to use Quandl::Babelfish.guess_frequency
+
+
 ## 1.3.6
 
 * Add #guess_csv_delimiter to Data::Format.
