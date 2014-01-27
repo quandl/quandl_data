@@ -1,3 +1,8 @@
+## 1.3.8
+
+* Data#headers should be passed around between Data#new
+
+
 ## 1.3.7
 
 * revise Quandl::Data#frequency to use Quandl::Babelfish.guess_frequency
