@@ -10,6 +10,14 @@ describe Quandl::Data do
   let(:data){ Quandl::Data.new(csv2) }
   subject{ data }
   
+  it "should extract headers" do
+    dt = Quandl::Data.new("2012-12-31,20.0,10.0")
+    dt.headers = ['date','value','low']
+    t2 = Quandl::Data.new(dt)
+    t2.headers.should eq ['date','value','low']
+  end
+  
+  
   describe "#clone" do
     subject{ data.clone }
     it{ should be_a Quandl::Data }
