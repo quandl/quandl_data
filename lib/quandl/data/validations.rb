@@ -11,7 +11,8 @@ module Validations
   included do
     ERROR_TYPES = [ 
       Error::GuessDateFormat,   Error::InvalidDate,
-      Error::UnknownDateFormat, Error::DateParseError ]
+      Error::UnknownDateFormat, Error::DateParseError,
+      CSV::MalformedCSVError ]
   end
   
   def valid?

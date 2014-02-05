@@ -18,7 +18,7 @@ describe Quandl::Data::Format do
     end
   end
   
-  subject{  Quandl::Data::Format }
+  subject{ Quandl::Data::Format }
   let(:escaped_csv){ '2444628,0.00385,0.001,0.123,0.00631,0.534\n2444627,0.00384,0.00159507,0.0056,0.00628948,0.009896' }
   let(:data_array){ [[ Date.jd(2444628),0.00385,0.001,0.123,0.00631,0.534], [ Date.jd(2444627),0.00384,0.00159507,0.0056,0.00628948,0.009896 ]] }
 
