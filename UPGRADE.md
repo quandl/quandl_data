@@ -1,3 +1,8 @@
+## 1.3.9
+
+* add malformed_csv spec and error catching
+
+
 ## 1.3.8
 
 * Data#headers should be passed around between Data#new
