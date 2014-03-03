@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "quandl_operation", "~> 0.3"
   s.add_runtime_dependency "quandl_babelfish", "~> 0.0"
+  s.add_runtime_dependency "activemodel", ">= 3.0.0"
   
   s.add_development_dependency "rake", "~> 10.0"
   s.add_development_dependency "rspec", "~> 2.13"

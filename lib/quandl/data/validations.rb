@@ -2,6 +2,11 @@ module Quandl
 class Data
 module Validations
   
+  ERROR_TYPES = [ 
+    Error::GuessDateFormat,   Error::InvalidDate,
+    Error::UnknownDateFormat, Error::DateParseError,
+    CSV::MalformedCSVError ]
+    
   extend ActiveSupport::Concern
 
   module ClassMethods
@@ -9,33 +14,20 @@ module Validations
   end
   
   included do
-    ERROR_TYPES = [ 
-      Error::GuessDateFormat,   Error::InvalidDate,
-      Error::UnknownDateFormat, Error::DateParseError,
-      CSV::MalformedCSVError ]
+    validate :data_should_be_clean!
   end
   
-  def valid?
-    raise_error_unless_valid!
-  rescue *ERROR_TYPES => error
-    self.errors << error
-    self.data_array = []
-    false
-  end
-  
-  def raise_error_unless_valid!
-    self.errors = []
-    self.data_array = pristine_data
+  def data_should_be_clean!
+    @data_array = clean(pristine_data)
     true
+    
+  rescue *ERROR_TYPES => err
+    self.errors.add( :data, err.to_s )
+    @data_array = []
+    false
+    
   end
   
-  def errors
-    @errors ||= []
-  end
-  def errors=(value)
-    @errors = value
-  end
-
 end
 end
 end

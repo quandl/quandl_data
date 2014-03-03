@@ -36,8 +36,9 @@ module Cleaning
     return data if data.kind_of?(Array) && cleaned?
     # Quandl::Data is already clean, but to avoid errors extract internal array
     if data.kind_of?(Quandl::Data)
-      # extract headers if present
-      self.headers = data.headers
+      # extract headers and errors if present
+      @headers = data.headers
+      @errors = data.errors
       return data.to_date.to_a
     end
     # Return empty array if given empty string, nil, etc.

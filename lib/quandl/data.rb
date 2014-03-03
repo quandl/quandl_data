@@ -1,14 +1,13 @@
 require "quandl/data/version"
 
+require 'active_model'
 require "active_support"
 require "active_support/inflector"
 require "active_support/core_ext/hash"
 require "active_support/core_ext/object"
 
 require "quandl/operation"
-
 require 'quandl/babelfish'
-
 require 'quandl/error/date_parse_error'
 
 require 'quandl/data/attributes'
@@ -21,6 +20,9 @@ require 'quandl/data/logging'
 
 module Quandl
 class Data
+  
+  include ActiveModel::Validations
+  
   include Attributes
   include Cleaning
   include Enumerator

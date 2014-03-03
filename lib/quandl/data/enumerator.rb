@@ -9,16 +9,15 @@ module Quandl::Data::Enumerator
     attr_accessor :pristine_data
   end
   
+  protected
+  
   def data_array
-    @data_array ||= clean( pristine_data )
+    valid? unless data_array?
+    @data_array
   end
 
-  def data_array=(data)
-    @data_array = clean(data)
-  end
-  
   def data_array?
-    @data_array.present?
+    defined?(@data_array)
   end
 
 end

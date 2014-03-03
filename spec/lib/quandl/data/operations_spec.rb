@@ -86,13 +86,13 @@ describe Quandl::Data::Operations do
   
   describe "#to_json" do
     it "should convert the data_array to json and back" do
-      JSON.parse(subject.to_json).should eq JSON.parse(subject.data_array.to_json)
+      JSON.parse(subject.to_json).should eq JSON.parse(subject.send(:data_array).to_json)
     end
   end
   
   describe "#as_json" do
     it "should be a representation of data_array" do
-      subject.as_json.should eq subject.data_array.as_json
+      subject.as_json.should eq subject.send(:data_array).as_json
     end
   end
   
@@ -102,7 +102,7 @@ describe Quandl::Data::Operations do
       data = Quandl::Fabricate::Data.rand( nils: false, rows: 10, columns: 1 ).sort_descending
       date = data[1][0]
       data.trim_end!(date)
-      data.data_array.should be_a Array
+      data.send(:data_array).should be_a Array
       data.count.should eq 9
     end
   
