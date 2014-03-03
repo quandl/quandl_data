@@ -1,3 +1,55 @@
+## 1.3.9
+
+* add malformed_csv spec and error catching
+
+
+## 1.3.8
+
+* Data#headers should be passed around between Data#new
+
+
+## 1.3.7
+
+* revise Quandl::Data#frequency to use Quandl::Babelfish.guess_frequency
+
+
+## 1.3.6
+
+* Add #guess_csv_delimiter to Data::Format.
+
+
+## 1.3.5
+
+* add Validations, #valid? #errors
+* add Data#to_table that returns self. Useful in conjunction with search scopes
+* refactor format errors to be raised with line, context, row
+
+
+## 1.3.4
+
+* add #to_precision(Integer)
+* fabricated data is forced to precision 14
+
+
+## 1.3.3
+
+* integrate Babelfish.clean as part of Quandl::Data.clean method.
+* Remove Quandl::Babelfish::Data
+
+
+## 1.3.2
+
+* readd quandl_babelfish as a dependency
+* Add Quandl::Babelfish::Data
+
+
+## 1.3.1
+
+* add .with_type to Data
+* revise errors to Error for consistency
+* refactor babelfish out of data, remove babelfisher
+
+
 ## 1.3.0
 
 * string_to_csv will not force values to float

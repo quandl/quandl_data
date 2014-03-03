@@ -38,6 +38,10 @@ module Operations
     return ''
   end
   
+  def to_table
+    self
+  end
+  
   def to_jd!
     @data_array = Quandl::Data::Format.to_jd( data_array ); self
   end
@@ -88,6 +92,10 @@ module Operations
     @data_array = Quandl::Operation::Sort.desc( data_array ); self
   end
   
+  def to_precision!(value)
+    @data_array = Quandl::Operation::Value.precision(data_array, value); self
+  end
+  
   def row(*args)
     return @row if args[0].nil?
     @row = args[0]
@@ -120,7 +128,7 @@ module Operations
   end
   
   def frequency
-    @frequency ||= Quandl::Operation::Collapse.frequency?( data_array )
+    @frequency ||= Quandl::Babelfish.guess_frequency( data_array ).try(:to_sym)
   end
   def frequency=(value)
     @frequency = value.to_sym if value.present?
@@ -130,6 +138,9 @@ module Operations
     self.class.new( data_array.dup, headers: headers, cleaned: cleaned )
   end
   
+  def to_precision(value)
+    clone.to_precision!(value)
+  end
   def to_jd
     clone.to_jd!
   end

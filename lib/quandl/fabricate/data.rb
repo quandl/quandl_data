@@ -28,7 +28,7 @@ class Data
       data << row(index) unless nils
       index += 1
     end
-    Quandl::Data.new( data ).sort_descending
+    Quandl::Data.new( data ).to_precision!(14).sort_descending
   end
 
   def row(index)

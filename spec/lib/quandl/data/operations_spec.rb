@@ -3,7 +3,13 @@ require 'spec_helper'
 
 describe Quandl::Data::Operations do
 
-  let(:data){ Quandl::Fabricate::Data.rand( nils: false, rows: 4, columns: 4 ) }
+  let(:data){ 
+    Quandl::Data.new([
+      ["2014-01-31", 10.011073010381, 11.024243847751, 14.113783910035, 19.017842117647], 
+      ["2014-01-30", 9.9992952774272, 11.112437798533, 14.025780316243, 18.990993399363], 
+      ["2014-01-29", 9.9975306959077, 11.052299899858, 14.022480132639, 19.034560972456],
+      ["2014-01-28", 9.9729411764706, 11.075058823529, 14.020588235294, 19.038]],  )
+  }
   subject { data }
 
   its(:to_h){ should be_a Hash }
@@ -15,6 +21,13 @@ describe Quandl::Data::Operations do
   
   it "should limit the data" do
     subject.limit(2).count.should eq 2
+  end
+  
+  describe "#to_precision" do
+    it "should set the precision" do
+      raw = '1998,10.293842930288591859035,1200.293842930288591859035'
+      Quandl::Data.new(raw).to_precision(6).to_date_str.should eq [["1998-12-31", 10.2938, 1200.29]]
+    end
   end
   
   describe "#collapse=" do
