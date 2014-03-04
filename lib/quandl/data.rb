@@ -6,6 +6,8 @@ require "active_support/inflector"
 require "active_support/core_ext/hash"
 require "active_support/core_ext/object"
 
+require 'quandl/support'
+
 require "quandl/operation"
 require 'quandl/babelfish'
 require 'quandl/error/date_parse_error'
