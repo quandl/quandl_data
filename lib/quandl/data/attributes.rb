@@ -17,6 +17,10 @@ module Attributes
       write_attribute(:headers, Array(value).flatten )
     end
     
+    def cleaned?
+      read_attribute(:cleaned) == true
+    end
+    
   end
   
   def initialize(*args)

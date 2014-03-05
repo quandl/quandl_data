@@ -46,14 +46,12 @@ module Cleaning
   end
   
   def clean_with_format(data)
-    puts 'expensive'
     data = Format.parse( data )
     cleaned!
     data
   end
   
   def clean_with_babelfish(data)
-    puts 'expensive'
     data, self.headers = Quandl::Babelfish.clean(data)
     cleaned!
     data

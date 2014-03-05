@@ -17,6 +17,7 @@ module Validations
   end
   
   def data_should_be_clean!
+    self.cleaned = false
     self.data_array = clean(pristine_data)
     true
     
