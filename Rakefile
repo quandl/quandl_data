@@ -5,6 +5,8 @@ require "rspec/core/rake_task"
 require 'quandl/data'
 require 'pry'
 
+require 'quandl/utility/rake_tasks'
+
 task :default => :spec
 
 desc "Run all specs"
@@ -14,4 +16,11 @@ end
 
 task :console do |t,args|
   binding.pry
+end
+
+Quandl::Utility::Tasks.configure do |c|
+  c.name              = 'quandl_data'
+  c.version_path      = File.join( Quandl::Utility.root_path, 'VERSION' )
+  c.changelog_path    = File.join( Quandl::Utility.root_path, 'UPGRADE.md' )
+  c.changelog_matching  = ['^QUGC','^WIKI']
 end
