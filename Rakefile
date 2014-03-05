@@ -20,7 +20,7 @@ end
 
 Quandl::Utility::Tasks.configure do |c|
   c.name              = 'quandl_data'
-  c.version_path      = File.join( Quandl::Utility.root_path, 'VERSION' )
-  c.changelog_path    = File.join( Quandl::Utility.root_path, 'UPGRADE.md' )
+  c.version_path      = 'VERSION'
+  c.changelog_path    = 'UPGRADE.md'
   c.changelog_matching  = ['^QUGC','^WIKI']
 end
