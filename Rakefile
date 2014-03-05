@@ -5,8 +5,6 @@ require "rspec/core/rake_task"
 require 'quandl/data'
 require 'pry'
 
-require 'quandl/utility/rake_tasks'
-
 task :default => :spec
 
 desc "Run all specs"
@@ -18,6 +16,7 @@ task :console do |t,args|
   binding.pry
 end
 
+require 'quandl/utility/rake_tasks'
 Quandl::Utility::Tasks.configure do |c|
   c.name              = 'quandl_data'
   c.version_path      = 'VERSION'
