@@ -47,26 +47,23 @@ module Attributes
       # apply _attributes directly to @attributes
       @attributes = attrs[:_attributes].is_a?(Hash) ? attrs.delete(:_attributes) : {}
       # apply attrs through write_attribute
-      self.attributes = attrs
+      self.attributes = attrs if attrs.is_a?(Hash)
       # onwards
       super(*args) if defined?(super)
     end
   end
   
-  def attributes=(new_attributes)
-    # for each defined attribute
-    self.class.attributes.each do |attribute_name|
-      # if new_attriubtes is present and the object responds to this method
-      if new_attributes.has_key?(new_attributes) && self.respond_to?("#{attribute_name}=")
-        # assign the change
-        self.send( "#{key}=", new_attributes[attribute_name] )
-      end 
+  def attributes=(new_attrs)
+    new_attrs.stringify_keys.each do |attr_key, attr_value|
+      # skip those attributes that are not defined
+      next unless self.class.attributes.include?(attr_key) && self.respond_to?("#{attr_key}=")
+      # pass to the attribute writer
+      self.send( "#{attr_key}=", attr_value )
     end
-    
   end
   
   def attributes
-    self.class.attributes.inject({}){|m,k| m[k] = self.send(k); m }
+    @attributes ||= {}
   end
   
   protected
@@ -76,6 +73,7 @@ module Attributes
   end
   
   def write_attribute(key, value)
+    @attributes ||= {}
     @attributes[key.to_s] = value
   end
   
