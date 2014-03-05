@@ -1,6 +1,6 @@
 ## 1.4.0 
 
-
+* QUGC-104 refactored Quandl::Data to use valid? and errors.
 
 
 
