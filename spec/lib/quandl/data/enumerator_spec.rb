@@ -10,7 +10,7 @@ describe Quandl::Data::Enumerator do
   its(:count){ should eq 4 }
 
   describe "#==" do
-    it{ should eq data.data_array }
+    it{ should eq data.to_a }
   end
 
   [nil, :to_jd, :to_date].each do |date_format|

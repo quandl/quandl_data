@@ -4,23 +4,10 @@ module Cleaning
   
   extend ActiveSupport::Concern
   
-  def cleaned
-    @cleaned
-  end
-  def cleaned=(value)
-    @cleaned = (value == true)
-  end
-  def cleaned?
-    cleaned == true
-  end
-  
-  def ensure_data_is_cleaned
-    data_array unless cleaned?
-  end
-  
   protected
   
   def clean(data)
+    data = data.dup if data.is_a?(Array) &&data.respond_to?(:dup)
     # check if data is dirty
     requires_cleaning = ensure_data_requires_cleaning(data)
     # short ciruit unless data is dirty
@@ -34,12 +21,6 @@ module Cleaning
   def ensure_data_requires_cleaning(data)
     # skip cleaning if already clean
     return data if data.kind_of?(Array) && cleaned?
-    # Quandl::Data is already clean, but to avoid errors extract internal array
-    if data.kind_of?(Quandl::Data)
-      # extract headers if present
-      self.headers = data.headers
-      return data.to_date.to_a
-    end
     # Return empty array if given empty string, nil, etc.
     return [] if data.blank?
     # data requires cleaning

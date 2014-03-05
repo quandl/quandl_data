@@ -1,3 +1,9 @@
+## 1.4.0 
+
+* QUGC-104 refactored Quandl::Data to use valid? and errors.
+
+
+
 ## 1.3.9
 
 * add malformed_csv spec and error catching

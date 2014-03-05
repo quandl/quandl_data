@@ -1,0 +1,1 @@
+require 'quandl/support/attributes'

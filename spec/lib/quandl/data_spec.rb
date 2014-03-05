@@ -50,7 +50,7 @@ describe Quandl::Data do
     subject{ Quandl::Data.new(malformed_csv) }
     before(:each){ subject.valid? }
     its(:valid?){ should be_false }
-    its('errors.to_s'){ should eq "[#<CSV::MalformedCSVError: Illegal quoting in line 1.>]" }
+    its('errors.messages'){ should eq({:data=>["Illegal quoting in line 1."]}) }
   end
   
   [:to_jd, :sort_ascending, :sort_descending, :to_date_str].each do |o1|
