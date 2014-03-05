@@ -4,20 +4,6 @@ module Cleaning
   
   extend ActiveSupport::Concern
   
-  def cleaned
-    @cleaned
-  end
-  def cleaned=(value)
-    @cleaned = (value == true)
-  end
-  def cleaned?
-    cleaned == true
-  end
-  
-  def ensure_data_is_cleaned
-    data_array unless cleaned?
-  end
-  
   protected
   
   def clean(data)
@@ -60,12 +46,14 @@ module Cleaning
   end
   
   def clean_with_format(data)
+    puts 'expensive'
     data = Format.parse( data )
     cleaned!
     data
   end
   
   def clean_with_babelfish(data)
+    puts 'expensive'
     data, self.headers = Quandl::Babelfish.clean(data)
     cleaned!
     data

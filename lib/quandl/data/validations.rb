@@ -8,22 +8,21 @@ module Validations
     CSV::MalformedCSVError ]
     
   extend ActiveSupport::Concern
-
-  module ClassMethods
-    
-  end
   
   included do
+  
+    include ActiveModel::Validations
+  
     validate :data_should_be_clean!
   end
   
   def data_should_be_clean!
-    @data_array = clean(pristine_data)
+    self.data_array = clean(pristine_data)
     true
     
   rescue *ERROR_TYPES => err
     self.errors.add( :data, err.to_s )
-    @data_array = []
+    self.data_array = []
     false
     
   end

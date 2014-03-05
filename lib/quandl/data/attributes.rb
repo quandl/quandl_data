@@ -4,33 +4,29 @@ module Attributes
   
   extend ActiveSupport::Concern
   
-  def initialize(*args)
-    self.pristine_data = args.first
-    self.attributes = args.extract_options!
-  end
+  included do
+    
+    include Quandl::Support::Attributes
+    
+    define_attributes :headers, :pristine_data, :cleaned, :data_array
+    
+    delegate *Array.forwardable_methods, to: :data_array
+    delegate :to_json, :as_json, to: :data_array
 
-  def headers?
-    headers.present?
-  end
-  def headers=(value)
-    @headers = value.flatten if value.kind_of?(Array)
-  end
-  def headers
-    ensure_data_is_cleaned
-    @headers
+    def headers=(value)
+      write_attribute(:headers, Array(value).flatten )
+    end
+    
   end
   
-  def attributes
-    @attributes ||= {}
-  end
-  def attributes=(attrs)
-    assign_attributes(attrs)
-    attributes
-  end
-  def assign_attributes(attrs)
-    attrs.each do |name, value|
-      self.send("#{name}=", value) if self.respond_to?("#{name}=")
+  def initialize(*args)
+    # passed an instance of quandl data?
+    if args.first.kind_of?(Quandl::Data)
+      @attributes = args.first.attributes
+    elsif args.first.present?
+      self.pristine_data = args.first
     end
+    valid? unless cleaned?
   end
   
 end

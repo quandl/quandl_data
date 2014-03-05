@@ -43,22 +43,22 @@ module Operations
   end
   
   def to_jd!
-    @data_array = Quandl::Data::Format.to_jd( data_array ); self
+    self.data_array = Quandl::Data::Format.to_jd( data_array ); self
   end
   
   def to_date!
-    @data_array = Quandl::Data::Format.to_date( data_array ); self
+    self.data_array = Quandl::Data::Format.to_date( data_array ); self
   end
   
   def to_date_str!
-    @data_array = to_date!.collect{|r| r = r.dup; r[0] = r[0].to_s; r }; self
+    self.data_array = to_date!.collect{|r| r = r.dup; r[0] = r[0].to_s; r }; self
   end
   
   def trim_start!(date)
     # date format
     date = Quandl::Operation::QDate.parse(date)
     # reject rows with dates less than
-    @data_array = to_date!.sort_descending!.delete_if do |row|
+    self.data_array = to_date!.sort_descending!.delete_if do |row|
       row_date = row[0]
       row_date < date
     end
@@ -69,7 +69,7 @@ module Operations
     # date format
     date = Quandl::Operation::QDate.parse(date)
     # reject rows with dates less than
-    @data_array = to_date!.sort_descending!.delete_if do |row|
+    self.data_array = to_date!.sort_descending!.delete_if do |row|
       row_date = row[0]
       row_date > date
     end
@@ -77,7 +77,7 @@ module Operations
   end
   
   def limit!(amount)
-    @data_array = data_array[0..( amount.to_i - 1 )]; self
+    self.data_array = data_array[0..( amount.to_i - 1 )]; self
   end
   
   def sort_order(dir)
@@ -85,21 +85,21 @@ module Operations
   end
   
   def sort_ascending!
-    @data_array = Quandl::Operation::Sort.asc( data_array ); self
+    self.data_array = Quandl::Operation::Sort.asc( data_array ); self
   end
 
   def sort_descending!
-    @data_array = Quandl::Operation::Sort.desc( data_array ); self
+    self.data_array = Quandl::Operation::Sort.desc( data_array ); self
   end
   
   def to_precision!(value)
-    @data_array = Quandl::Operation::Value.precision(data_array, value); self
+    self.data_array = Quandl::Operation::Value.precision(data_array, value); self
   end
   
   def row(*args)
     return @row if args[0].nil?
     @row = args[0]
-    @data_array = [data_array[ args[0] ]]
+    self.data_array = [data_array[ args[0] ]]
     self
   end
   
@@ -111,8 +111,8 @@ module Operations
   def transform=(value)
     return false unless Quandl::Operation::Transform.valid?(value)
     @transform = value
-    @data_array = Quandl::Operation::Transform.perform( data_array, value )
-    @data_array
+    self.data_array = Quandl::Operation::Transform.perform( data_array, value )
+    self.data_array
   end
 
   def collapse(*args)
@@ -124,7 +124,7 @@ module Operations
     return false unless Quandl::Operation::Collapse.valid?(collapse)
     @collapse = collapse
     @frequency = collapse
-    @data_array = Quandl::Operation::Collapse.perform( data_array, collapse )
+    self.data_array = Quandl::Operation::Collapse.perform( data_array, collapse )
   end
   
   def frequency
@@ -135,7 +135,7 @@ module Operations
   end
   
   def clone
-    self.class.new( data_array.dup, headers: headers, cleaned: cleaned )
+    self.class.new( _attributes: attributes.clone )
   end
   
   def to_precision(value)
