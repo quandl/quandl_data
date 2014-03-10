@@ -1,28 +1,52 @@
 # Quandl::Data
 
-### Quandl::Data
+## Purpose
+
+Array-like class for loading, modifying, and dumping time-series data.
+
+
+
+## Installation
 
 ```ruby
-
-require 'quandl/data'
-
-decade_of_daily_data_as_csv = Quandl::Fabricate::Data.rand( rows: 3650, columns: 4, nils: false ).to_csv
-
-table = Quandl::Data.new( decade_of_daily_data_as_csv )
-table.collapse(:monthly).transform(:rdiff).to_date
-
+gem 'quandl_data'
 ```
 
 
-### Quandl::Fabricate::Data
+
+## Usage
+
+### Load
 
 ```ruby
+require 'quandl/data'
 
+csv = "2014,9.9982352941176,\n2013,,10.960561384083\n2012,10.101388852042,10.960561384083\n"
+table = Quandl::Data.new( csv )
+table.to_precision(4)
+# => [[Wed, 31 Dec 2014, 9.998, nil], [Tue, 31 Dec 2013, nil, 10.96], [Mon, 31 Dec 2012, 10.1, 10.96]]
+```
+
+
+### Modify
+
+```ruby
+require 'quandl/data'
 require 'quandl/fabricate/data'
 
-data = Quandl::Fabricate::Data.rand( rows: 4, columns: 2, nils: false )
-data.to_csv
+data = Quandl::Fabricate::Data.rand( rows: 24, columns: 2, nils: false )
+data.collapse(:weekly).transform(:rdiff).to_precision(4).to_a
+# => [[Sun, 16 Mar 2014, -1.454, -0.8842], [Sun, 09 Mar 2014, 0.02759, -0.2466], [Sun, 02 Mar 2014, 2.294, 0.2915]]
+```
 
-=> "2456459,9.75573946698621,11.003327581245657\n2456460,9.815208080651333,11.06123640714187\n2456461,9.85055418685121,11.054083764705883\n2456462,9.915882352941177,10.96635294117647\n"
 
+### Dump
+
+```ruby
+require 'quandl/data'
+require 'quandl/fabricate/data'
+
+data = Quandl::Fabricate::Data.rand( rows: 24, columns: 2, nils: false )
+data.collapse(:weekly).transform(:rdiff).to_precision(4).to_csv
+# => "2014-03-16,0.01004,-0.006875\n2014-03-09,-0.002372,-0.03461\n2014-03-02,0.00289,0.007114\n2014-02-23,0.008578,-0.01171\n"
 ```
