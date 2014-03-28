@@ -16,7 +16,6 @@ module Attributes
     
     def inherited(subclass)
       subclass.define_attributes(*attributes)
-      subclass.formatters = formatters.dup
     end
     
     def define_attributes(*attribute_names)
