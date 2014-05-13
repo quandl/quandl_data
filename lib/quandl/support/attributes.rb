@@ -1,5 +1,5 @@
 require 'active_model'
-require "active_support/all"
+require "active_support/concern"
 
 module Quandl
 module Support
