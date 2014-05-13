@@ -11,7 +11,6 @@ module Attributes
     define_attributes :headers, :pristine_data, :cleaned, :data_array
     
     delegate *Array.forwardable_methods, to: :data_array
-    delegate :to_json, :as_json, to: :data_array
 
     def headers=(value)
       write_attribute(:headers, Array(value).flatten )
@@ -31,6 +30,22 @@ module Attributes
       self.pristine_data = args.first
     end
     valid? unless cleaned?
+  end
+  
+  def to_json
+    ensure_json_support
+    data_array.try(:to_json)
+  end
+  
+  def as_json
+    ensure_json_support
+    data_array.try(:as_json)
+  end
+  
+  private
+  
+  def ensure_json_support
+    require 'active_support/core_ext/object' unless Object.respond_to?(:as_json)
   end
   
 end
