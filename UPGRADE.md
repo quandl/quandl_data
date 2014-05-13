@@ -1,3 +1,9 @@
+## 1.5.1 
+
+
+
+
+
 ## 1.5.0 
 
 * quandl/support only requires active_support/concern
