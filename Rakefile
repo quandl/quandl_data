@@ -18,7 +18,7 @@ end
 
 require 'quandl/utility/rake_tasks'
 Quandl::Utility::Tasks.configure do |c|
-  c.name              = 'quandl_data'
+  c.name              = 'quandl'
   c.version_path      = 'VERSION'
   c.changelog_path    = 'UPGRADE.md'
   c.changelog_matching  = ['^QUGC','^WIKI']
