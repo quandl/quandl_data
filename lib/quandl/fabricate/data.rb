@@ -1,18 +1,18 @@
 module Quandl
 module Fabricate
 class Data
-  
-  def self.rand(*args)
-    new(*args).random
+
+  def self.rand(args = {})
+    new(args).random
   end
-  
+
   attr_accessor :attributes, :offset, :rows, :columns, :frequency, :data, :nils
 
-  def initialize(*args)
-    self.attributes = default_options.merge args.extract_options!
+  def initialize(args = {})
+    self.attributes = default_options.merge args
   end
 
-  def to_csv(*args)
+  def to_csv(args)
     data.collect(&:to_csv).join
   end
 
@@ -71,16 +71,16 @@ class Data
       monkey:     6
     }
   end
-  
+
   def attributes
     @attributes ||= {}
   end
-  
+
   def attributes=(attrs)
     assign_attributes(attrs)
     attributes
   end
-  
+
   # mass assignment protection
   def assign_attributes(attrs)
     attrs.each do |name, value|

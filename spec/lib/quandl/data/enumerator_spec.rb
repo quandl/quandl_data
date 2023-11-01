@@ -1,9 +1,9 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe Quandl::Data::Enumerator do
+describe :fabricate do
 
-  let(:data){ Quandl::Fabricate::Data.rand( nils: false, rows: 4, columns: 4 ) }
+  let(:data){ Quandl::Fabricate::Data.rand({ nils: false, rows: 4, columns: 4 }) }
   subject { data }
 
   its(:to_h){ should be_a Hash }
@@ -23,18 +23,18 @@ describe Quandl::Data::Enumerator do
           raw
         }
         subject{ Quandl::Data.new(raw.clone) }
-        
+
         it "subject.to_jd.first.first" do
           # binding.pry if date_format == nil && format == :to_csv
           puts subject.to_jd.first.first
         end
-        
+
         its('to_jd.first.first'){ should be_a Integer }
         its('to_date.first.first'){ should be_a Date }
-        
+
       end
-      
+
     end
   end
-  
+
 end

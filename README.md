@@ -34,7 +34,7 @@ table.to_precision(4)
 require 'quandl/data'
 require 'quandl/fabricate/data'
 
-data = Quandl::Fabricate::Data.rand( rows: 24, columns: 2, nils: false )
+data = Quandl::Fabricate::Data.rand({ rows: 24, columns: 2, nils: false })
 data.collapse(:weekly).transform(:rdiff).to_precision(4).to_a
 # => [[Sun, 16 Mar 2014, -1.454, -0.8842], [Sun, 09 Mar 2014, 0.02759, -0.2466], [Sun, 02 Mar 2014, 2.294, 0.2915]]
 ```
@@ -46,7 +46,7 @@ data.collapse(:weekly).transform(:rdiff).to_precision(4).to_a
 require 'quandl/data'
 require 'quandl/fabricate/data'
 
-data = Quandl::Fabricate::Data.rand( rows: 24, columns: 2, nils: false )
+data = Quandl::Fabricate::Data.rand({ rows: 24, columns: 2, nils: false })
 data.collapse(:weekly).transform(:rdiff).to_precision(4).to_csv
 # => "2014-03-16,0.01004,-0.006875\n2014-03-09,-0.002372,-0.03461\n2014-03-02,0.00289,0.007114\n2014-02-23,0.008578,-0.01171\n"
 ```

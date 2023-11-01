@@ -1,27 +1,27 @@
 module Quandl
 class Data
 module Operations
-  
+
   extend ActiveSupport::Concern
 
   module ClassMethods
-    
-    def new_with_jd(*args)
+
+    def new_with_jd(args)
       # force data to date
       args[0] = Format.to_date( args[0] )
       # onwards
-      self.new( *args )
+      self.new( args )
     end
-    
+
     def forwardable_methods
       @forwardable_methods ||= (operations + operations.collect{|o| "#{o}!" if method_defined?("#{o}!") }).compact
     end
-    
+
     def operations
-      [ :to_csv, :to_jd, :to_date, :sort_order, :sort_ascending, 
+      [ :to_csv, :to_jd, :to_date, :sort_order, :sort_ascending,
         :sort_descending, :transform, :collapse, :frequency, :parse ]
     end
-    
+
   end
 
   def to_h
@@ -30,30 +30,30 @@ module Operations
       memo
     end
   end
-  
+
   def to_csv
     return data_array.collect(&:to_csv).join if data_array?
     return pristine_data.collect(&:to_csv).join if pristine_data.respond_to?(:collect)
     return pristine_data if pristine_data.kind_of?(String)
     return ''
   end
-  
+
   def to_table
     self
   end
-  
+
   def to_jd!
     self.data_array = Quandl::Data::Format.to_jd( data_array ); self
   end
-  
+
   def to_date!
     self.data_array = Quandl::Data::Format.to_date( data_array ); self
   end
-  
+
   def to_date_str!
     self.data_array = to_date!.collect{|r| r = r.dup; r[0] = r[0].to_s; r }; self
   end
-  
+
   def trim_start!(date)
     # date format
     date = Quandl::Operation::QDate.parse(date)
@@ -64,7 +64,7 @@ module Operations
     end
     self
   end
-  
+
   def trim_end!(date)
     # date format
     date = Quandl::Operation::QDate.parse(date)
@@ -75,15 +75,15 @@ module Operations
     end
     self
   end
-  
+
   def limit!(amount)
     self.data_array = data_array[0..( amount.to_i - 1 )]; self
   end
-  
+
   def sort_order(dir)
     dir == :asc ? sort_ascending! : sort_descending!
   end
-  
+
   def sort_ascending!
     self.data_array = Quandl::Operation::Sort.asc( data_array ); self
   end
@@ -91,21 +91,21 @@ module Operations
   def sort_descending!
     self.data_array = Quandl::Operation::Sort.desc( data_array ); self
   end
-  
+
   def to_precision!(value)
     self.data_array = Quandl::Operation::Value.precision(data_array, value); self
   end
-  
-  def row(*args)
+
+  def row(args = nil)
     return @row if args[0].nil?
     @row = args[0]
     self.data_array = [data_array[ args[0] ]]
     self
   end
-  
-  def transform(*args)
-    return @transform unless args.first.present?
-    self.transform = args.first
+
+  def transform(args = nil)
+    return @transform unless args.present?
+    self.transform = args
     self
   end
   def transform=(value)
@@ -115,9 +115,9 @@ module Operations
     self.data_array
   end
 
-  def collapse(*args)
-    return @collapse unless args.first.present?
-    self.collapse = args.first
+  def collapse(args = nil)
+    return @collapse unless args.present?
+    self.collapse = args
     self
   end
   def collapse=(collapse)
@@ -126,18 +126,18 @@ module Operations
     @frequency = collapse
     self.data_array = Quandl::Operation::Collapse.perform( data_array, collapse )
   end
-  
+
   def frequency
     @frequency ||= Quandl::Babelfish.guess_frequency( data_array ).try(:to_sym)
   end
   def frequency=(value)
     @frequency = value.to_sym if value.present?
   end
-  
+
   def clone
     self.class.new( _attributes: attributes.clone )
   end
-  
+
   def to_precision(value)
     clone.to_precision!(value)
   end
@@ -165,7 +165,7 @@ module Operations
   def sort_descending
     clone.sort_descending!
   end
-  
+
 end
 end
 end
